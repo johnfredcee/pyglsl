@@ -1,4 +1,4 @@
-from euclid import *
+
 import pyglet
 
 # Create a context matching the above configuration.  Will fail if
@@ -8,8 +8,6 @@ window = pyglet.window.Window(visible=False)
 # Print the version of the context created.
 #print 'OpenGL version:', window.context.get_info().get_version()
 print window.context._info.version
-          
-          
 
 window.close()
 

@@ -1,8 +1,11 @@
 import math
-from euclid import *
+from euclid import Vector3
+from euclid import Matrix4
+from euclid import Matrix3
 
 
 class Camera:
+	through  = 1.2
 	across   = 1
 	up       = 2
 	forward  = 3
