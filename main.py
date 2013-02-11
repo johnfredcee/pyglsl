@@ -35,7 +35,6 @@ def on_resize(width, height):
 @window.event
 def on_draw():
 	global cam, view_matrix, proj_matrix, tex_matrix, grid_texture
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 	mainShader = shaderSystem["main"]
 	mainShader.bind()
 	mainShader.uniform_matrixf("projMatrix", proj_matrix)
@@ -44,11 +43,11 @@ def on_draw():
 	mainShader.uniform_matrixf("texMatrix",  tex_matrix)
 	glActiveTexture(GL_TEXTURE0)
 	glBindTexture(grid_texture.target, grid_texture.id)
-	mainShader.uniformi('tex0', 0)	
+	mainShader.uniformi('tex0', 0)
 	planet.draw(mainShader)
 	glBindTexture(grid_texture.target, 0)
 	mainShader.unbind()
-	
+
 def setup():
 	global shaderSystem, mainShader, grid_image, grid_texture, planet, cam
 	# One-time GL setup

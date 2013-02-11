@@ -3,13 +3,16 @@ import os
 from shader import Shader
 
 class ShaderSystem:
-	vertShaders = None
-	fragShaders = None
-	geomShaders = None
-	shaders     = {}
+	vertShaders   = None
+	fragShaders   = None
+	geomShaders   = None
+	shaders       = {}
+	instance      = None
+	currentShader = None
 
-		
+
 	def __init__(self, shaderdir = os.getcwd()):
+		assert ShaderSystem.instance = None
 		self.shaderdir = shaderdir
 		def listShaders(d):
 			f = [ shfile for shfile in os.listdir(os.path.join(shaderdir, d)) ]
@@ -21,7 +24,8 @@ class ShaderSystem:
 		ShaderSystem.vertShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/vert") }
 		ShaderSystem.fragShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/frag") }
 		ShaderSystem.geomShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/geom") }
-		print "Shaders available ", ShaderSystem.vertShaders.keys()															 
+		instance = self
+		print "Shaders available ", ShaderSystem.vertShaders.keys()
 
 	def getShaderFileContents(self, name):
 		vertFile  = None
@@ -29,19 +33,19 @@ class ShaderSystem:
 			vertFile = ShaderSystem.vertShaders[name]
 			f = open(vertFile)
 			vertFile = f.readlines()
-			f.close()			
+			f.close()
 		fragFile  = None
 		if ShaderSystem.fragShaders.has_key(name):
 			fragFile = ShaderSystem.fragShaders[name]
 			f = open(fragFile)
 			fragFile = f.readlines()
-			f.close()			
+			f.close()
 		geomFile  = None
 		if ShaderSystem.geomShaders.has_key(name):
 			geomFile = ShaderSystem.geomShaders[name]
 			f = open(geomFile)
 			geomFile = f.readlines()
-			f.close()			
+			f.close()
 		if (vertFile != None) or (fragFile != None) or (geomFile != None):
 			return (vertFile, fragFile, geomFile)
 
@@ -53,7 +57,6 @@ class ShaderSystem:
 
 	def __getitem__(self, name):
 		if (self.shaders.has_key(name)):
-			return self.shaders[name]						   		
+			return self.shaders[name]
 		else:
-			raise KeyError, name  # <<< DON'T FORGET THIS LINE !!			
-	
+			raise KeyError, name  # <<< DON'T FORGET THIS LINE !!

@@ -7,6 +7,8 @@
 
 import pyglet.gl as pygl
 import ctypes as cffi
+from shadersystem import ShaderSystem
+from shaderparameter import ShaderParameter
 
 class Shader:
 	# vert, frag and geom take arrays of source strings
@@ -25,6 +27,7 @@ class Shader:
 		# self.createShader(frag, GL_GEOMETRY_SHADER_EXT)
 		self.attributes = {}
 		self.uniforms   = {}
+		self.parameters = {}
 		# attempt to link the program
 		self.link()
 
@@ -86,9 +89,11 @@ class Shader:
 			self.bind()
 			self.enumerate_attributes()
 			self.enumerate_uniforms()
-			
-			
 
+
+	#
+	# Enumerate the attributs of the shader
+	#
 	def enumerate_attributes(self):
 		param = cffi.c_long()
 		pygl.glGetProgramiv(self.handle, pygl.GL_ACTIVE_ATTRIBUTES, cffi.byref(param))
@@ -109,6 +114,7 @@ class Shader:
 			location = pygl.glGetAttribLocation(self.handle, cname)
 			self.attributes[cname.value] = \
 			{ "location" : location, "info" : ( attrib_type.value, attrib_size.value ) }
+			self.parameters[cname.value] = ShaderParameter(cname.value, location, kind = ShaderParameter.ATTRIBUTE_PARAMETER)
 		return
 
 	def enumerate_uniforms(self):
@@ -132,15 +138,18 @@ class Shader:
 					 cname.value)
 			self.uniforms[cname.value] = \
 			{ "location" : location, "info" : ( uniform_type.value, uniform_size.value ) }
+			self.parameters[cname.value] = ShaderParameter(cname.value, handle = location, kind = ShaderParameter.UNIFORM_PARAMETER)
 		return
 
 	def bind(self):
 		# bind the program
+		ShaderSystem.currentShader = self
 		pygl.glUseProgram(self.handle)
 
 	def unbind(self):
 		# unbind whatever program is currently bound - not necessarily this
 		# program, so this should probably be a class method instead
+		ShaderSystem.currentShader = None
 		pygl.glUseProgram(0)
 
 	# upload a floating point uniform
