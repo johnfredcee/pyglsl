@@ -43,8 +43,34 @@ class ShaderParameter(object):
 			bindAttribute(self, currentShader, value)
 		pass
 
+	# To do .. still to account for these
+	# gl.GL_BOOL
+	# gl.GL_BOOL_VEC2
+	# gl.GL_BOOL_VEC3
+	# gl.GL_BOOL_VEC4
+	# gl.GL_SAMPLER_1D
+	# gl.GL_SAMPLER_2D
+	# gl.GL_SAMPLER_3D
+	# gl.GL_SAMPLER_CUBE
+	# gl.GL_SAMPLER_1D_SHADOW
+	# gl.GL_SAMPLER_2D_SHADOW
+
 	def setUniform(self, currentShader, value):
-		pass
+		handlers = { gl.GL_FLOAT : [ Shader.uniformf, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_VEC2 :  [ Shader.uniformf, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_VEC3 : [ Shader.uniformf, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_VEC4 : [ Shader.uniformf, [ currentShader, self.name, value ] ],
+					 gl.GL_INT : [ Shader.uniformi, [ currentShader, self.name, value ] ],
+					 gl.GL_INT_VEC2 : [ Shader.uniformi, [ currentShader, self.name, value ] ],
+					 gl.GL_INT_VEC3 : [ Shader.uniformi, [ currentShader, self.name, value ] ],
+					 gl.GL_INT_VEC4 : [ Shader.uniformi, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_MAT2 : [ Shader.uniform_matrixf, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_MAT3 : [ Shader.uniform_matrixf, [ currentShader, self.name, value ] ],
+					 gl.GL_FLOAT_MAT4 : [ Shader.uniform_matrixf, [ currentShader, self.name, value ] ] }
+		if handlers.has_key[self.datatype]:
+			handler = handlers[self.datatype][0]
+			handler(*handlers[self.datatype][1])
+
 
 	def bindAttribute(self, currentShader, value):
 		pass
