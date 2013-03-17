@@ -4,14 +4,12 @@
 # Distributed under the Boost Software License, Version 1.0
 # (see http://www.boost.org/LICENSE_1_0.txt)
 #
-
 import pyglet
 import camera
+import shaders
 from pyglet.gl import *
 from euclid    import *
 
-from shader		  import Shader
-from shadersystem import ShaderSystem
 from sphere		  import Sphere
 
 proj_matrix = Matrix4()
@@ -35,10 +33,10 @@ def on_resize(width, height):
 @window.event
 def on_draw():
 	global cam, view_matrix, proj_matrix, tex_matrix, grid_texture
-	mainShader = shaderSystem["main"]
+	mainShader = shaders.getShader("main")
 	mainShader.bind()
 	mainShader.uniform_matrixf("projMatrix", proj_matrix)
-	view_matrix = cam.matrix
+	view_matrix = cam.view_matrix
 	mainShader.uniform_matrixf("viewMatrix", view_matrix)
 	mainShader.uniform_matrixf("texMatrix",  tex_matrix)
 	glActiveTexture(GL_TEXTURE0)
@@ -49,14 +47,14 @@ def on_draw():
 	mainShader.unbind()
 
 def setup():
-	global shaderSystem, mainShader, grid_image, grid_texture, planet, cam
+	global mainShader, grid_image, grid_texture, planet, cam
 	# One-time GL setup
 	glClearColor(1, 1, 1, 1)
 	glColor3f(1, 0, 0)
 	glEnable(GL_DEPTH_TEST)
 	glEnable(GL_CULL_FACE)
-	shaderSystem = ShaderSystem()
-	mainShader = shaderSystem.createShader("main")
+	shaders.load()
+	mainShader = shaders.createShader("main")
 	grid_image = pyglet.image.load('images/grid.png')
 	grid_texture = grid_image.get_texture()
 	planet = Sphere(1.0)
