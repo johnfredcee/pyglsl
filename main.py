@@ -10,34 +10,37 @@ import shaders
 from pyglet.gl import *
 from euclid    import *
 
-from sphere		  import Sphere
+from sphere import Sphere
 
-proj_matrix = Matrix4()
-view_matrix = Matrix4()
 tex_matrix  = Matrix4()
 
+# need compatibility profile, but can't seem to select it
+#config = pyglet.gl.Config(major_version = 3, minor_version = 3, forward_compatibility=False)
+
 # create the window, but keep it offscreen until we are done with setup
-window = pyglet.window.Window(640, 480, resizable=True, visible=False, caption="GLSL Test")
+window = pyglet.window.Window(640, 480,  resizable=True, visible=False, caption="GLSL Test")
 
 # centre the window on whichever screen it is currently on (in case of multiple monitors)
 window.set_location(window.screen.width/2 - window.width/2, window.screen.height/2 - window.height/2)
 
+print window.context._info.version
+
 @window.event
 def on_resize(width, height):
 	# Override the default on_resize handler to create a 3D projection
-	global proj_matrix
+	global cam
 	glViewport(0, 0, width, height)
-	proj_matrix = Matrix4.new_perspective(math.pi / 3, float(width) / float(height), 1.0, 1000.0)
+	cam.resize(width, height)
 	return pyglet.event.EVENT_HANDLED
 
 @window.event
 def on_draw():
-	global cam, view_matrix, proj_matrix, tex_matrix, grid_texture
+	global cam, tex_matrix, grid_texture
+	window.clear()
 	mainShader = shaders.getShader("main")
 	mainShader.bind()
-	mainShader.uniform_matrixf("projMatrix", proj_matrix)
-	view_matrix = cam.view_matrix
-	mainShader.uniform_matrixf("viewMatrix", view_matrix)
+	mainShader.uniform_matrixf("projMatrix", cam.projection_matrix)
+	mainShader.uniform_matrixf("viewMatrix", cam.view_matrix)
 	mainShader.uniform_matrixf("texMatrix",  tex_matrix)
 	glActiveTexture(GL_TEXTURE0)
 	glBindTexture(grid_texture.target, grid_texture.id)
@@ -49,14 +52,13 @@ def on_draw():
 def setup():
 	global mainShader, grid_image, grid_texture, planet, cam
 	# One-time GL setup
-	glClearColor(1, 1, 1, 1)
-	glColor3f(1, 0, 0)
+	grid_image = pyglet.image.load('images/grid.png')
+	grid_texture = grid_image.get_texture(rectangle=True)
+	glClearColor(1.0, 0.0, 1.0, 1.0)
 	glEnable(GL_DEPTH_TEST)
 	glEnable(GL_CULL_FACE)
 	shaders.load()
 	mainShader = shaders.createShader("main")
-	grid_image = pyglet.image.load('images/grid.png')
-	grid_texture = grid_image.get_texture()
 	planet = Sphere(1.0)
 	cam = camera.Camera(position = Vector3(0.0, 0.0, -10.0))
 

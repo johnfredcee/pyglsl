@@ -29,7 +29,11 @@ class Camera:
 		self.view_matrix[12:15] = positionInv
 		self.camera_matrix[12:15] = position
 		self.camera_matrix[15]    = 1.0
-		self.projection_matrix = Matrix4.new_perspective(math.pi / 2.0, 4.0 / 3.0, 1.0, 1000.0)
+		self.fov = math.pi / 3.0
+		self.near = 1.0
+		self.far = 10000.0
+		self.aspect = 4.0 / 3.0
+		self.projection_matrix = Matrix4.new_perspective(self.fov, self.aspect, self.near, self.far)
 		return
 	
 	def makeCurrentCamera(self):
@@ -72,6 +76,14 @@ class Camera:
 		self.camera_matrix[4:7]   = up
 		self.camera_matrix[8:11]  = forward
 
+	def resize(self, width, height):
+		self.aspect = float(width) / float(height)
+		self.projection_matrix = Matrix4.new_perspective(self.fov, self.aspect, self.near, self.far)
+		
 	def project(self, fov, aspect, near, far):
+		self.fov = fov
+		self.aspect = aspect
+		self.near = near
+		self.far = far
 		self.projection_matrix = Matrix4.new_perspective(fov, aspect, near, far)
 		pass
