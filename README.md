@@ -11,3 +11,7 @@ hg clone https://code.google.com/p/pyglet/
 https://github.com/ezag/pyeuclid
 
 ..happy hacking!
+
+Pyglet at present doesn't have a way to select a compatibility profile, only
+a core profile. I was using an OpenGL 3.3 compatibility profile, so I imagine
+you need at least this for it to work.
