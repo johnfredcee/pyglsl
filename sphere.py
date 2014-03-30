@@ -54,7 +54,7 @@ class Sphere(object):
 		vertattribs = "%dg3f/static" %  positions
 		uvattribs   = "%dg2f/static" %  uvs
 		pyglet.graphics.draw_indexed(len(self.vertices) / 3, GL_TRIANGLES, \
-									 self.indexes, \
+									self.indexes, \
 									(vertattribs, self.vertices), (uvattribs, self.uvs))
 		
 				  

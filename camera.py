@@ -1,9 +1,8 @@
 import math
 from euclid import Vector3
-from euclid import Matrix3
 from euclid import Matrix4
+from euclid import Matrix3
 from euclid import Quaternion
-
 
 class Camera:
     X_AXIS = 0
@@ -26,10 +25,7 @@ class Camera:
         realup = up - (up.dot(forward)) * forward
         across = forward.cross(realup)
         self.position = position
-        matrix = Matrix4()
-        matrix[0:3] = across
-        matrix[4:7] = up
-        matrix[8:11] = forward
+        matrix = Matrix4.new_rotate_triple_axis(across, up, forward)
         self.orientation = Quaternion.new_rotate_matrix(matrix)
 
     def up(self):
