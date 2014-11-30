@@ -4,10 +4,12 @@ from euclid import Matrix4
 from euclid import Matrix3
 from euclid import Quaternion
 
+
+X_AXIS = 0
+Y_AXIS = 1
+Z_AXIS = 2
+
 class Camera:
-    X_AXIS = 0
-    Y_AXIS = 1
-    Z_AXIS = 2
     through = 1.2
     across = 1
     up = 2
@@ -15,30 +17,38 @@ class Camera:
     pitch = 1
     yaw = 2
     roll = 3
-    axes = [Vector3(1.0, 0.0, 0.0), Vector3(0.0, 1.0, 0.0),
+    axes = [Vector3(1.0, 0.0, 0.0),
+            Vector3(0.0, 1.0, 0.0),
             Vector3(0.0, 0.0, 1.0)]
 
     def __init__(self, position=Vector3(0.0, 0.0, 0.0),
                  forward=Vector3(0.0, 0.0, 1.0),
                  up=Vector3(0.0, 1.0, 0.0)):
         assert(up.dot(forward)*forward != up)
-        realup = up - (up.dot(forward)) * forward
-        across = forward.cross(realup)
         self.position = position
-        matrix = Matrix4.new_rotate_triple_axis(across, up, forward)
-        self.orientation = Quaternion.new_rotate_matrix(matrix)
+        realforward = forward.normalized()
+        realup = up - (up.dot(realforward)) * realforward
+        realup.normalize()
+        across = forward.cross(realup)
+        self.camMatrix = Matrix4.new_rotate_triple_axis(across,
+                                                        realup,
+                                                        -realforward)
+        self.calc_view()
+
+    def calc_view(self):
+        self.viewMatrix = self.camMatrix.transposed()
+        self.eyeInv = -(self.viewMatrix * self.position)
+        self.viewMatrix[12:15] = self.eyeInv
+        self.camMatrix[12:15] = self.position
 
     def up(self):
-        matrix = Matrix3(self.orientation)
-        return Vector3(matrix[3], matrix[4], matrix[5])
+        return Vector3(self.camMatrix[4], self.camMatrix[5], self.camMatrix[6])
 
     def forward(self):
-        matrix = Matrix3(self.orientation)
-        return Vector3(matrix[6], matrix[7], matrix[8])
+        return Vector3(self.camMatrix[8], self.camMatrix[9], self.camMatrix[10])
 
     def across(self):
-        matrix = Matrix3(self.orientation)
-        return Vector3(matrix[0], matrix[1], matrix[2])
+        return Vector3(self.camMatrix[0], self.camMatrix[1], self.camMatrix[2])
 
     def axis(self, axis):
         if (axis == 0):
@@ -49,27 +59,22 @@ class Camera:
             return self.forward()
 
     def position(self):
-        return self.position
+        return self.positionm
 
     def move(self, distance, axis=2):
         forward = self.axis(axis)
-        self.position[0] += forward[0] * distance
-        self.position[1] += forward[1] * distance
-        self.position[2] += forward[2] * distance
+        self.position.x += forward.x * distance
+        self.position.y += forward.y * distance
+        self.position.z += forward.z * distance
+        self.calc_view()
 
     def rotate(self, angle=math.pi / 180.0, axis=2):
         rot = Quaternion(angle, self.axis(axis))
         self.orientaion = self.orientation * rot
 
     def apply(self, shader):
-        mat = self.orientation.get_matrix()
         if (shader.has_uniform("cameraMatrix")):
-            cam_mat = mat
-            cam_mat[12:15] = self.position
-            shader.uniform_matrixf("cameraMatrix", cam_mat)
+            shader.uniform_matrixf("cameraMatrix", self.camMatrix)
         if (shader.has_uniform("viewMatrix")):
-            view_mat = mat.transposed()
-            view_translate = view_mat.transform(self.position)
-            view_mat[12:15] = view_translate
-            shader.uniform_matrixf("viewMatrix", view_mat)
+            shader.uniform_matrixf("viewMatrix", self.viewMatrix)
         return

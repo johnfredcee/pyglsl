@@ -7,11 +7,11 @@
 
 import pyglet
 import camera
+import sphere
 from pyglet.gl import *
 from euclid import *
 
 from shadersystem import ShaderSystem
-from sphere import Sphere
 
 proj_matrix = Matrix4()
 view_matrix = Matrix4()
@@ -56,6 +56,26 @@ def on_draw():
     mainShader.unbind()
 
 
+@window.event
+def on_key_press(symbol, modifiers):
+    global cam
+    if symbol == pyglet.window.key.W:
+        cam.move(0.1, camera.Z_AXIS)
+    if symbol == pyglet.window.key.S:
+        cam.move(-0.1, camera.Z_AXIS)
+    if symbol == pyglet.window.key.D:
+        cam.move(0.1, camera.X_AXIS)
+    if symbol == pyglet.window.key.A:
+        cam.move(-0.1, camera.X_AXIS)
+    pass
+
+
+@window.event
+def on_key_release(symbol, modifiers):
+    global cam    
+    pass
+
+
 def setup():
     global shaderSystem, mainShader, grid_image, grid_texture, planet, cam
     # One-time GL setup
@@ -67,7 +87,7 @@ def setup():
     mainShader = shaderSystem.createShader("main")
     grid_image = pyglet.image.load('images/grid.png')
     grid_texture = grid_image.get_texture()
-    planet = Sphere(1.0)
+    planet = sphere.Sphere(1.0)
     cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
 
 # schedule an empty update function, at 60 frames/second
