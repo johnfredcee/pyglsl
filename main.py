@@ -35,7 +35,7 @@ def on_resize(width, height):
     glViewport(0, 0, width, height)
     aspect_ratio = float(width) / float(height)
     proj_matrix = Matrix4.new_perspective(math.pi / 3,
-                                          aspect_ratio, 1.0, 1000.0)
+                                          aspect_ratio, 0.1, 100.0)
     return pyglet.event.EVENT_HANDLED
 
 
@@ -60,13 +60,13 @@ def on_draw():
 def on_key_press(symbol, modifiers):
     global cam
     if symbol == pyglet.window.key.W:
-        cam.move(0.1, camera.Z_AXIS)
+        cam.move(0.01, camera.Z_AXIS)
     if symbol == pyglet.window.key.S:
-        cam.move(-0.1, camera.Z_AXIS)
+        cam.move(-0.01, camera.Z_AXIS)
     if symbol == pyglet.window.key.D:
-        cam.move(0.1, camera.X_AXIS)
+        cam.move(0.01, camera.X_AXIS)
     if symbol == pyglet.window.key.A:
-        cam.move(-0.1, camera.X_AXIS)
+        cam.move(-0.01, camera.X_AXIS)
     pass
 
 
