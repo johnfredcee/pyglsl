@@ -18,32 +18,27 @@ from shadersystem import ShaderSystem
 proj_matrix = Matrix4()
 view_matrix = Matrix4()
 tex_matrix = Matrix4()
-gui_matrix = Matrix4()
 frame = None
 dialogue = None
+window_width = 800
+window_height = 600
 
 # create the window, but keep it offscreen until we are done with setup
-window = pyglet.window.Window(800, 600,
+window = pyglet.window.Window(window_width, window_height,
                               vsync=False,
                               caption="GLSL Test")
 
-
-# # centre the window on whichever screen it is currently on (in case of
-# # multiple monitors)
-# window.set_location(window.screen.width/2 - window.width/2,
-#                     window.screen.height/2 - window.height/2)
 
 
 @window.event
 def on_resize(width, height):
     # Override the default on_resize handler to create a 3D projection
-    global proj_matrix, gui_matrix
-    glViewport(0, 0, width, height)
+    global proj_matrix, window_width, window_height
+    window_width = width
+    window_height = height
     aspect_ratio = float(width) / float(height)
     proj_matrix = Matrix4.new_perspective(math.pi / 3,
                                           aspect_ratio, 0.1, 100.0)
-    gui_matrix = Matrix4.new_identity()
-    #util.make_ortho(gui_matrix, 0, float(width), 0, float(height), 0.0, 1.0)
     return pyglet.event.EVENT_HANDLED
 
 
@@ -63,38 +58,31 @@ def update_gui(dt):
 
 @window.event
 def on_draw():
-    global cam, proj_matrix, gui_matrix, tex_matrix, grid_texture, frame
+    global cam, proj_matrix, tex_matrix, grid_texture, frame
+
     window.clear()
-    #glClear(GL_COLOR_BUFFER_BIT)
-    # mainShader = shaderSystem["main"]
-    # mainShader.bind()
-    # mainShader.uniform_matrixf("projMatrix", proj_matrix)
-    # cam.apply(mainShader)
-    # mainShader.uniform_matrixf("texMatrix",  tex_matrix)
-    # glBindTexture(grid_texture.target, grid_texture.id)
-    # mainShader.uniformi('tex0', 0)
-    # planet.draw(mainShader)
-    # glBindTexture(grid_texture.target, 0)
-    # mainShader.unbind()
-    guiShader = shaderSystem["gui"]
-    guiShader.bind()
+    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_CULL_FACE)
+    mainShader = shaderSystem["main"]
+    mainShader.bind()
+    mainShader.uniform_matrixf("projMatrix", proj_matrix)
+    cam.apply(mainShader)
+    mainShader.uniform_matrixf("texMatrix",  tex_matrix)
     glActiveTexture(GL_TEXTURE0)
-    guiShader.uniform_matrixf("guiMatrix", gui_matrix)
-    glBindTexture(grid_texture.target, grid_texture.id)    
-    guiShader.uniformi('tex0', 0)
-    positions   = guiShader.attributes["position"]["location"]
-    uvs         = guiShader.attributes["uv"]["location"]
-    vertattribs = "%dg2i/static" %  positions
-    uvattribs   = "%dg2f/static" %  uvs    
-    pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
-    [0, 1, 2, 0, 2, 3],
-    (vertattribs, (100, 100,
-             150, 100,
-             150, 150,
-                   100, 150)),
-    (uvattribs, (0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0)))    
-    frame.draw()  
-    guiShader.unbind()
+    glBindTexture(grid_texture.target, grid_texture.id)
+    mainShader.uniformi('tex0', 0)
+    planet.draw(mainShader)
+    glBindTexture(grid_texture.target, 0)
+    mainShader.unbind()
+    # back to "old opengl" for the gui
+    glViewport(0, 0, window_width, window_height)
+    glMatrixMode(gl.GL_PROJECTION)
+    glLoadIdentity()
+    glOrtho(0, window_width, 0, window_height, -1.0, 1.0)
+    glMatrixMode(gl.GL_MODELVIEW)
+    glDisable(GL_DEPTH_TEST)
+    glDisable(GL_CULL_FACE)
+    frame.draw()
 
 
 @window.event
@@ -126,14 +114,9 @@ def setup_gui():
     global frame, dialogue
     # load some gui themesn
     theme = Theme('themes/macos')
-    guiShader = shaderSystem["gui"]
-    positions   = guiShader.attributes["position"]["location"]
-    uvs         = guiShader.attributes["uv"]["location"]
-    theme.uniforms(positions, uvs)
     # create a frame to contain our gui, the full size of our window
     frame = Frame(theme, w=800, h=600)
     window.push_handlers(frame)
-
     # create dialogue - note that we create the entire gui in a single call
     dialogue = Dialogue('Inspector', x=20, y=600-20,
                         # add a vertical layout to hold the window contents
@@ -141,25 +124,22 @@ def setup_gui():
                             # add a text label, note that this element is named...
                             Label('0.0 fps', name='fps_label'),
                             Label('000.00 000.00 000.00 pos', name='pos_label')]))
-    frame.add( dialogue )
-    
+    frame.add(dialogue)
+
 
     
 def setup():
     global shaderSystem, grid_image, grid_texture, planet, cam
     # One-time GL setup
-    glClearColor(1, 1, 0, 1)
-#     glColor3f(1, 0, 0)
-#     glEnable(GL_DEPTH_TEST)
-#    glEnable(GL_CULL_FACE)
+    glClearColor(1, 1, 1, 1)
     shaderSystem = ShaderSystem()
     mainShader = shaderSystem.createShader("main")
-    guiShader  = shaderSystem.createShader("gui")
     grid_image = pyglet.image.load('images/grid.png')
     grid_texture = grid_image.get_texture()
     planet = sphere.Sphere(1.0)
     cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
-
+    mainShader.unbind()
+    
 # schedule an empty update function, at 60 frames/second
 pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
 
