@@ -1,6 +1,6 @@
 import os
 
-from shader import Shader
+from shaders import Shader
 
 
 class ShaderSystem:
@@ -20,6 +20,8 @@ class ShaderSystem:
 
         def shaderName(s):
             return os.path.splitext(os.path.basename(s))[0]
+
+        # setup lists of available shader files
         ShaderSystem.vertShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/vert") }
         ShaderSystem.fragShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/frag") }
         ShaderSystem.geomShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/geom") }

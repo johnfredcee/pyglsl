@@ -55,8 +55,8 @@ class Sphere(object):
         uvs         = shader.attributes["uv"]["location"]
         vertattribs = "%dg3f/static" %  positions
         uvattribs   = "%dg2f/static" %  uvs
-        pyglet.graphics.draw_indexed(len(self.vertices) / 3, GL_TRIANGLES, \
-                                    self.indexes, \
+        pyglet.graphics.draw_indexed(len(self.vertices) / 3, GL_TRIANGLES,
+                                    self.indexes,
                                     (vertattribs, self.vertices), (uvattribs, self.uvs))
         
                   
