@@ -84,16 +84,16 @@ def on_draw():
     guiShader.uniformi('tex0', 0)
     positions   = guiShader.attributes["position"]["location"]
     uvs         = guiShader.attributes["uv"]["location"]
-    vertattribs = "%dg2f/static" %  positions
+    vertattribs = "%dg2i/static" %  positions
     uvattribs   = "%dg2f/static" %  uvs    
     pyglet.graphics.draw_indexed(4, pyglet.gl.GL_TRIANGLES,
     [0, 1, 2, 0, 2, 3],
-    (vertattribs, (100.0, 100.0,
-             150.0, 100.0,
-             150.0, 150.0,
-             100.0, 150.0)),
+    (vertattribs, (100, 100,
+             150, 100,
+             150, 150,
+                   100, 150)),
     (uvattribs, (0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0)))    
-    #frame.draw()  
+    frame.draw()  
     guiShader.unbind()
 
 
@@ -124,12 +124,14 @@ def on_key_release(symbol, modifiers):
 
 def setup_gui():
     global frame, dialogue
-    # load some gui themes
-    themes = [Theme('themes/macos'), Theme('themes/pywidget')]
-    theme = 0
-
+    # load some gui themesn
+    theme = Theme('themes/macos')
+    guiShader = shaderSystem["gui"]
+    positions   = guiShader.attributes["position"]["location"]
+    uvs         = guiShader.attributes["uv"]["location"]
+    theme.uniforms(positions, uvs)
     # create a frame to contain our gui, the full size of our window
-    frame = Frame(themes[theme], w=800, h=600)
+    frame = Frame(theme, w=800, h=600)
     window.push_handlers(frame)
 
     # create dialogue - note that we create the entire gui in a single call
