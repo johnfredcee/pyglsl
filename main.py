@@ -9,7 +9,6 @@ import pyglet
 import camera
 import sphere
 import util
-from pyglet.gl import *
 from euclid import *
 from simplui import *
 
@@ -54,34 +53,35 @@ def update_gui(dt):
         # and change the text, to display the current fps
         element. text = '%.1f fps' % (fps)
         element = frame.get_element_by_name('pos_label')
-        element. text = '%6.2f,%6.2f,%6.2f pos' % (pos.x, pos.y, pos.z)
+        element.text = '%6.2f,%6.2f,%6.2f pos' % (pos.x, pos.y, pos.z)
+
 
 @window.event
 def on_draw():
     global cam, proj_matrix, tex_matrix, grid_texture, frame
 
     window.clear()
-    glEnable(GL_DEPTH_TEST)
-    glEnable(GL_CULL_FACE)
+    pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
+    pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
     mainShader = shaderSystem["main"]
     mainShader.bind()
     mainShader.uniform_matrixf("projMatrix", proj_matrix)
     cam.apply(mainShader)
     mainShader.uniform_matrixf("texMatrix",  tex_matrix)
-    glActiveTexture(GL_TEXTURE0)
-    glBindTexture(grid_texture.target, grid_texture.id)
+    pyglet.gl.glActiveTexture(pyglet.gl.GL_TEXTURE0)
+    pyglet.gl.glBindTexture(grid_texture.target, grid_texture.id)
     mainShader.uniformi('tex0', 0)
     planet.draw(mainShader)
-    glBindTexture(grid_texture.target, 0)
+    pyglet.gl.glBindTexture(grid_texture.target, 0)
     mainShader.unbind()
     # back to "old opengl" for the gui
-    glViewport(0, 0, window_width, window_height)
-    glMatrixMode(gl.GL_PROJECTION)
-    glLoadIdentity()
-    glOrtho(0, window_width, 0, window_height, -1.0, 1.0)
-    glMatrixMode(gl.GL_MODELVIEW)
-    glDisable(GL_DEPTH_TEST)
-    glDisable(GL_CULL_FACE)
+    pyglet.gl.glViewport(0, 0, window_width, window_height)
+    pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
+    pyglet.gl.glLoadIdentity()
+    pyglet.gl.glOrtho(0, window_width, 0, window_height, -1.0, 1.0)
+    pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
+    pyglet.gl.glDisable(pyglet.gl.GL_DEPTH_TEST)
+    pyglet.gl.glDisable(pyglet.gl.GL_CULL_FACE)
     frame.draw()
 
 
@@ -104,10 +104,9 @@ def on_key_press(symbol, modifiers):
     pass
 
 
-
 @window.event
 def on_key_release(symbol, modifiers):
-    global cam    
+    global cam
     pass
 
 def setup_gui():
@@ -127,11 +126,11 @@ def setup_gui():
     frame.add(dialogue)
 
 
-    
+
 def setup():
     global shaderSystem, grid_image, grid_texture, planet, cam
     # One-time GL setup
-    glClearColor(1, 1, 1, 1)
+    pyglet.gl.glClearColor(1, 1, 1, 1)
     shaderSystem = ShaderSystem()
     mainShader = shaderSystem.createShader("main")
     grid_image = pyglet.image.load('images/grid.png')
@@ -139,7 +138,7 @@ def setup():
     planet = sphere.Sphere(1.0)
     cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
     mainShader.unbind()
-    
+
 # schedule an empty update function, at 60 frames/second
 pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
 
