@@ -28,6 +28,10 @@ window = pyglet.window.Window(window_width, window_height,
                               caption="GLSL Test")
 
 
+@window.event
+def on_close():
+    window.close()
+
 
 @window.event
 def on_resize(width, height):
@@ -43,6 +47,7 @@ def on_resize(width, height):
 
 def update(dt):
     pass
+
 
 def update_gui(dt):
     if dialogue.parent is not None:
@@ -109,6 +114,7 @@ def on_key_release(symbol, modifiers):
     global cam
     pass
 
+
 def setup_gui():
     global frame, dialogue
     # load some gui themesn
@@ -124,7 +130,6 @@ def setup_gui():
                             Label('0.0 fps', name='fps_label'),
                             Label('000.00 000.00 000.00 pos', name='pos_label')]))
     frame.add(dialogue)
-
 
 
 def setup():
@@ -155,6 +160,10 @@ setup_gui()
 window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
-
-# finally, run the application
-pyglet.app.run()
+try:
+    print "Ipython import"
+    from IPython.lib.inputhook import enable_gui
+    enable_gui('pyglet')
+except ImportError:
+    print "Ipython import failed"
+    pyglet.app.run()

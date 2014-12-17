@@ -1,0 +1,8 @@
+
+* Editable Mesh
+ ** Begin / end collections of verts/edges/quads
+ ** Functional operations on collections of verts/edges/quads
+ ** Cursor..what happens to the concept of a cursor?
+
+* Textures
+ ** Simplui nodes?
