@@ -150,18 +150,18 @@ class EditableMesh:
         for face in p["faces"]:
             for vi in face:
                 assert(vi < len(p["verts"]))                
-        vi0 = len(self.vertices) 
+        vis = []
         for v in p["verts"]:
             if (len(v) == 3):
-                self.addVertex(Vertex(v[0], v[1], v[2]))
+                vis = vis + [ self.addVertex(Vertex(v[0], v[1], v[2])) ]
             else:
-                self.addVertex(v)
+                vis = vis + [ self.addVertex(v) ]
         for f in p["faces"]:
             assert(len(f) > 2)
             if (len(f) == 3):
-                self.addTriVerts(vi0 + f[0], vi0 + f[1], vi0 + f[2])
+                self.addTriVerts(vis[f[0]], vis[f[1]], vis[f[2]])
             if (len(f) == 4):
-                self.addQuadVerts(vi0 + f[1], vi0 + f[2], vi0 + f[3], vi0 + f[4])
+                self.addQuadVerts(vis[f[1]], vis[f[2]], vis[f[3]], vis[f[4]])
             if (len(f) > 4):
-                polyface = map(lambda x: x + vi0, p["faces"])
+                polyface = map(lambda x: vis[x], p["faces"])
                 self.addPolyVerts(polyface)
