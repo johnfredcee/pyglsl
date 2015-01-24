@@ -1,0 +1,13 @@
+params = { "yawDrag" : 0.95 ,
+           "yawRate" : 55.0,
+           "playerSpeed" : 0.0,
+           "playerAccel" : 0.0,               
+           "playerTopAccel"  : 0.3,
+           "playerAccelDelta" : 0.75,
+           "playerDrag" : 0.0001,
+           "rollRate" : 1.0,
+           "rollDamping" : 0.05,
+           "maxRoll" : 55.0,
+           "trackWidth" : 20.0,
+           "deadZone" : 0.12f,
+           "brakingCoefficent" : 0.2 }

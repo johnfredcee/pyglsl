@@ -32,8 +32,7 @@ def surface(slices, stacks, func):
         for j in xrange(stacks):
             phi = j * 2.0 * pi / stacks
             p = func(theta, phi)
-            verts.append(p)
-            
+            verts.append(p)            
     faces = []
     v = 0
     for i in xrange(slices):
@@ -47,9 +46,9 @@ def surface(slices, stacks, func):
 
 def perp(u):
     """Randomly pick a reasonable perpendicular vector"""
-    u_prime = u.cross(Vector3(0, 1, 0))
+    u_prime = u.cross(Vector3(1, 0, 0))
     if u_prime.magnitude_squared() < 0.01:
-       u_prime = u.cross(v = Vector3(0, 0, 1))
+       u_prime = u.cross(v = Vector3(0, 1, 0))
     return u_prime.normalized()
 
 def tube(u, v, func, radius):
@@ -69,6 +68,25 @@ def tube(u, v, func, radius):
     center = p1 + radius * spoke_vector
     return center[:]
 
+def track(u, v, func, radius):
+    # Compute three basis vectors:
+    p1 = Vector3(*func(u))
+    p2 = Vector3(*func(u + 0.01))
+    # A = forward
+    A = (p2 - p1).normalized()
+    # b = up
+    B = perp(A)
+    # c = side
+    C = A.cross(B).normalized()
+
+    # Rotate the Z-plane vector appropriately:
+    m = Matrix4.new_rotate_triple_axis(B, C, A)
+    spoke_vector = m * Vector3(radius, 0.0, 0.0)
+
+    # Add the spoke vector to the center to obtain the rim position:
+    center = p1 + radius * spoke_vector
+    return center[:]
+    
 # shape generating functions
 def sphere(u, v):
     x = sin(u) * cos(v)
@@ -86,6 +104,31 @@ def klein(u, v):
         z = -8 * sin(u)
     y = -2 * (1 - cos(u) / 2) * sin(v)
     return x, y, z
+
+def spline( t, p ):
+    """ Catmull-Rom
+        (Ps can be numpy vectors or arrays too: colors, curves ...)
+    """
+        # wikipedia Catmull-Rom -> Cubic_Hermite_spline
+        # 0 -> p0,  1 -> p1,  1/2 -> (- p_1 + 9 p0 + 9 p1 - p2) / 16
+    # assert 0 <= t <= 1
+    return (
+        t*((2.0-t)*t - 1.0) * p[0]
+        + (t*t*(3.0*t - 5.0) + 2) * p[1]
+        + t*((4.0 - 3.0*t)*t + 1) * p[2]
+        + (t-1.0)*t*t * p[3] ) / 2.0
+
+def spline_path(t, points):
+    ti = floor(t * len(points))
+    t = t * len(points) - ti    
+    si0 = ti - 1 if ti - 1 >= 0 else len(points) - (ti - 1)
+    si1 = ti % len(points)
+    si2 = (ti + 1) % len(points)
+    si3 = (ti + 2) % len(points)
+    x = spline(t, [ points[si0].x, points[si1].x, points[si2].x, points[si3].x ])
+    y = spline(t, [ points[si0].y, points[si1].y, points[si2].y, points[si3].y ])
+    z = spline(t, [ points[si0].z, points[si1].z, points[si2].z, points[si3].z ])
+    return x,y,z
 
 def granny_path(t):
     t = 2 * t
@@ -113,3 +156,4 @@ def make_knot(slices = 32, stacks = 32):
     slices, stacks = 32, 32
     verts, faces = parametric.surface(slices, stacks, granny)
     return { "verts" : verts, "faces" : faces }
+

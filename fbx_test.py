@@ -4,6 +4,7 @@ import math
 import euclid
 import mesh
 import geom
+import track
 
 fbxManager = None
 fbxScene = None
@@ -84,6 +85,8 @@ def makeMesh( pScene, mesh ):
         result.AddPolygon(vi2)
         result.EndPolygon()
         index = index + 1
+
+    result.GenerateNormals()
     return result
 
 def addNode( pScene, nodeName, **kwargs ):
@@ -95,6 +98,10 @@ def addNode( pScene, nodeName, **kwargs ):
     newNode.LclScaling.Set(fbx.FbxDouble3(scaling[0], scaling[1], scaling[2]))
     newNode.LclTranslation.Set(fbx.FbxDouble3(location[0], location[1], location[2]))
     parent.AddChild( newNode )
+    fbxMaterial = makeMaterial( pScene,
+                                nodeName + "_Material",
+                                **kwargs)
+    newNode.AddMaterial(fbxMaterial)
     # Create a new node in the scene.
     return newNode
         
@@ -173,11 +180,11 @@ def saveScene( pFilename, pFbxManager, pFbxScene, pAsASCII=False ):
 
     exporter.Destroy()
 
-def make_mesh(geomfn, name):
+def make_mesh(geomfn, name, **kwargs):
     data = geomfn()
     emesh = mesh.EditableMesh(name, data)
     fbxmesh = makeMesh(fbxScene, emesh)
-    fbxnode = addNode(fbxScene, emesh.name +  "+Node")
+    fbxnode = addNode(fbxScene, emesh.name +  "+Node", **kwargs)
     fbxnode.SetNodeAttribute(fbxmesh)
     return
 
@@ -208,7 +215,12 @@ if __name__ == "__main__":
     # octnode = addNode(fbxScene, octemesh.name + "_Node")
     # octnode.SetNodeAttribute(octfbxmesh)
     # make_mesh(geom.octohedron, "Octohedron")
-    make_mesh(geom.make_klein, "Klien")
+    # make_mesh(geom.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
+    track_data = track.make_track()
+    i = 0
+    for segment_data in track_data:
+        make_mesh(lambda:  segment_data, "Segment%d" % i, diffuse = (0.4, 0.4, 0.4))
+        i = i + 1
     writeScene(sceneName + ".fbx")
     fbxManager.Destroy()
     del fbxManager
