@@ -66,7 +66,7 @@ def makeMaterial( pScene, materialName, **kwargs ):
     lMaterial.SpecularFactor.Set(specularity)
     return lMaterial
 
-def makeMesh( pScene, mesh ):
+def makeMesh( pScene, pMaterial, mesh, texture = None ):
     result = fbx.FbxMesh.Create( pScene, mesh.name + "_Mesh")
     result.InitControlPoints(len(mesh.vertices))
     index = 0
@@ -86,7 +86,43 @@ def makeMesh( pScene, mesh ):
         result.EndPolygon()
         index = index + 1
 
+    # generate a normal layer
     result.GenerateNormals()
+
+    # add a layer with uvs and colors
+    layer = result.GetLayer(0)
+    if (not layer):
+        result.CreaterLayer()
+        layer = mesh.GetLayer(0)
+
+    # color layer
+    colorLayerElement = fbx.FbxLayerElementVertexColor.Create(result, "")
+    colorLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+    colorLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+    for v in mesh.vertices:
+        c4 = fbx.FbxColor(v.r, v.g, v.b, v.a)
+        colorLayerElement.GetDirectArray().Add(c4)
+    layer.SetVertexColors(colorLayerElement)
+    # diffuse uv layer
+    uvDiffuseLayerElement = fbx.FbxLayerElementUV.Create( result, 'diffuseUV' )
+    uvDiffuseLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+    uvDiffuseLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+    for v in mesh.vertices:
+        v2 = fbx.FbxVector2(v.u, v.v)
+        uvDiffuseLayerElement.GetDirectArray().Add(v2)
+    layer.SetUVs(uvDiffuseLayerElement, fbx.FbxLayerElement.eTextureDiffuse)
+    if (texture):
+        fbxTexture  = fbx.FbxFileTexture.Create(pScene, mesh.name + "_Texture")
+        fbxTexture.SetFileName(texture)
+        fbxTexture.SetTextureUse( fbx.FbxTexture.eStandard )
+        fbxTexture.SetMappingType( fbx.FbxTexture.eUV )
+        fbxTexture.SetMaterialUse( fbx.FbxFileTexture.eModelMaterial )
+        fbxTexture.SetSwapUV( False )
+        fbxTexture.SetTranslation( 0.0, 0.0 )
+        fbxTexture.SetScale( 1.0, 1.0 )
+        fbxTexture.SetRotation( 0.0, 0.0 )
+        fbxTexture.Alpha.Set( 0.0 )
+        pMaterial.Diffuse.ConnectSrcObject(fbxTexture)
     return result
 
 def addNode( pScene, nodeName, **kwargs ):
@@ -98,42 +134,28 @@ def addNode( pScene, nodeName, **kwargs ):
     newNode.LclScaling.Set(fbx.FbxDouble3(scaling[0], scaling[1], scaling[2]))
     newNode.LclTranslation.Set(fbx.FbxDouble3(location[0], location[1], location[2]))
     parent.AddChild( newNode )
+    return newNode
+
+def addMaterial( pScene, pNode, nodeName, **kwargs):
     fbxMaterial = makeMaterial( pScene,
                                 nodeName + "_Material",
                                 **kwargs)
-    newNode.AddMaterial(fbxMaterial)
+    pNode.AddMaterial(fbxMaterial)
     # Create a new node in the scene.
-    return newNode
+    return fbxMaterial
         
-
-def getASCIIFormatIndex( pManager ):
-    ''' Obtain the index of the ASCII export format. '''
-    # Count the number of formats we can write to.
-    numFormats = pManager.GetIOPluginRegistry().GetWriterFormatCount()
-
-    # Set the default format to the native binary format.
-    formatIndex = pManager.GetIOPluginRegistry().GetNativeWriterFormat()
-
-    # Get the FBX format index whose corresponding description contains "ascii".
-    for i in range( 0, numFormats ):
-
-        # First check if the writer is an FBX writer.
-        if pManager.GetIOPluginRegistry().WriterIsFBX( i ):
-
-            # Obtain the description of the FBX writer.
-            description = pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )
-
-            # Check if the description contains 'ascii'.
-            if 'ascii' in description:
-                formatIndex = i
-                break
-
-    # Return the file format.
-    return formatIndex
-
-
 def writeScene(pFilename, pFileFormat = -1, pEmbedMedia = False):
     lExporter = fbx.FbxExporter.Create(fbxManager, "")
+    print "Readers"
+    numFormats = fbxManager.GetIOPluginRegistry().GetReaderFormatCount()
+    for i in range( 0, numFormats ):
+        print "Format %d " % i
+        print fbxManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
+    numFormats = fbxManager.GetIOPluginRegistry().GetWriterFormatCount()
+    print "Writers"
+    for i in range( 0, numFormats ):
+        print "Format %d " % i
+        print fbxManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
     if pFileFormat < 0 or pFileFormat >= fbxManager.GetIOPluginRegistry().GetWriterFormatCount():
         pFileFormat = fbxManager.GetIOPluginRegistry().GetNativeWriterFormat()
         if not pEmbedMedia:
@@ -162,40 +184,17 @@ def writeScene(pFilename, pFileFormat = -1, pEmbedMedia = False):
 
     lExporter.Destroy()
 
-def saveScene( pFilename, pFbxManager, pFbxScene, pAsASCII=False ):
-    ''' Save the scene using the Python FBX API '''
-    exporter = fbx.FbxExporter.Create( pFbxManager, '' )
-
-    if pAsASCII:
-        #DEBUG: Initialize the FbxExporter object to export in ASCII.
-        asciiFormatIndex = getASCIIFormatIndex( pFbxManager )
-        isInitialized = exporter.Initialize( pFilename, asciiFormatIndex )
-    else:
-        isInitialized = exporter.Initialize( pFilename )
-
-    if( isInitialized == False ):
-        raise Exception( 'Exporter failed to initialize. Error returned: ' + str( exporter.GetLastErrorString() ) )
-
-    exporter.Export( pFbxScene )
-
-    exporter.Destroy()
-
 def make_mesh(geomfn, name, **kwargs):
     data = geomfn()
     emesh = mesh.EditableMesh(name, data)
-    fbxmesh = makeMesh(fbxScene, emesh)
-    fbxnode = addNode(fbxScene, emesh.name +  "+Node", **kwargs)
+    fbxnode = addNode(fbxScene, emesh.name +  "_Node", **kwargs)
+    fbxmaterial = addMaterial(fbxScene, fbxnode, emesh.name + "_Node", **kwargs)
+    fbxmesh = makeMesh(fbxScene, fbxmaterial, emesh, kwargs["texture"] if "texture" in kwargs else None)
     fbxnode.SetNodeAttribute(fbxmesh)
     return
 
 if __name__ == "__main__":
-    sceneName = "cubeScene"
-    if (len(sys.argv) >= 2):
-        sceneName = sys.argv[1]
-    else:
-        cylinderName = "Cylinder"
-    if (len(sys.argv) >= 3):
-        cubeName = sys.argv[2]
+    sceneName = "track"
     try:
         import fbx
     except ImportError:
@@ -217,10 +216,7 @@ if __name__ == "__main__":
     # make_mesh(geom.octohedron, "Octohedron")
     # make_mesh(geom.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
     track_data = track.make_track()
-    i = 0
-    for segment_data in track_data:
-        make_mesh(lambda:  segment_data, "Segment%d" % i, diffuse = (0.4, 0.4, 0.4))
-        i = i + 1
+    make_mesh(lambda:  track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
     writeScene(sceneName + ".fbx")
     fbxManager.Destroy()
     del fbxManager

@@ -6,12 +6,43 @@ class Vertex:
         self.y = round(y, 4)
         self.z = round(z, 4)
         self.v = euclid.Vector3(self.x,self.y,self.z)
-        
+        self.r = 0.0
+        self.g = 0.0
+        self.b = 0.0
+        self.a = 0.0
+        self.u = 0.0
+        self.v = 0.0
+
+    def setUV(self, u, v):
+        self.u = u
+        self.v = v
+
+    def setColor(self, r, g, b, a = 0.0):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
+
+    def __init__(self, **kwargs):
+        self.x = round(kwargs["vert"][0], 4)
+        self.y = round(kwargs["vert"][1], 4)
+        self.z = round(kwargs["vert"][2], 4)
+        self.v = euclid.Vector3(self.x,self.y,self.z)
+        self.r = round(kwargs["color"][0], 4)
+        self.g = round(kwargs["color"][1], 4)
+        self.b = round(kwargs["color"][2], 4)
+        if (len(kwargs["color"]) == 3):
+            self.a = 0.0
+        else:
+            self.a = round(kwargs["color"][3], 4)
+        self.u = round(kwargs["uv"][0], 4)
+        self.v = round(kwargs["uv"][1], 4)
+
     def __hash__(self):
-        return hash((self.x, self.y, self.z))
+        return hash((self.x, self.y, self.z, self.u, self.v))
 
     def __eq__(self, other):
-        return other and self.x == other.x and self.y == other.y and self.z == other.z
+        return other and self.x == other.x and self.y == other.y and self.z == other.z and self.u ==  other.u and self.v == other.v
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -50,7 +81,7 @@ class EditableMesh:
         if (data != None):
             self.addPolyFaces(data)
         
-		
+        
     def addVertex(self, v):
         if (v in self.vertmap):
             return self.vertmap[v]
@@ -151,11 +182,13 @@ class EditableMesh:
             for vi in face:
                 assert(vi < len(p["verts"]))                
         vis = []
+        vi = 0
         for v in p["verts"]:
-            if (len(v) == 3):
-                vis = vis + [ self.addVertex(Vertex(v[0], v[1], v[2])) ]
-            else:
-                vis = vis + [ self.addVertex(v) ]
+            vuv = p["uvs"][vi] if p["uvs"] else (0.0, 0.0)
+            vcolor = p["colors"][vi] if p["colors"] else (1.0, 1.0, 1.0, 0.0)
+            vertex = Vertex(vert = v, color = vcolor, uv = vuv)            
+            vis = vis + [ self.addVertex(vertex) ]
+            vi = vi + 1
         for f in p["faces"]:
             assert(len(f) > 2)
             if (len(f) == 3):
