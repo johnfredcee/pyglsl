@@ -1,0 +1,222 @@
+
+import sys
+import math
+import euclid
+import mesh
+import geom
+import track
+
+fbxManager = None
+fbxScene = None
+meshes = []
+
+###############################################################
+# Helper Function(s).                                         #
+###############################################################
+
+def makeMaterial( pScene, materialName, **kwargs ):
+    lMaterialName = materialName
+    lShadingName  = "Phong"
+    lBlack = fbx.FbxDouble3(0.0, 0.0, 0.0)
+    lRed = fbx.FbxDouble3(1.0, 0.0, 0.0)
+    if kwargs.has_key("diffuse"):
+        diffuse = kwargs["diffuse"]
+        diffuse = fbx.FbxDouble3(diffuse[0], diffuse[1], diffuse[2])
+    else:
+        diffuse = lRed
+    if kwargs.has_key("ambient"):
+        ambient = kwargs["ambient"]
+        ambient = fbx.FbxDouble3(ambient[0], ambient[1], ambient[2])
+    else:
+        ambient = lRed
+    if kwargs.has_key("specular"):
+        specular = kwargs["specular"]
+        specular = fbx.FbxDouble3(specular[0], specular[1], specular[2])
+    else:
+        specular = lBlack
+    if kwargs.has_key("emissive"):
+        emissive = kwargs["emissive"]
+        emissive = fbx.FbxDouble3(emissive[0], emissive[1], emissive[2])
+    else:
+        emissive = lBlack
+    if kwargs.has_key("transparency"):
+        transpaency = kwargs["transparency"]
+    else:
+        transparency = 0.5
+    if kwargs.has_key("shininess"):
+        shininess = kwargs["shininess"]
+    else:
+        shininess = 0.5
+    if kwargs.has_key("specularity"):
+        specularity = kwargs["specularity"]
+    else:
+        specularity = 0.3
+    lMaterial = fbx.FbxSurfacePhong.Create(fbxManager, lMaterialName)
+    # Generate primary and secondary colors.
+    lMaterial.Emissive.Set(emissive)
+    lMaterial.Ambient.Set(ambient)
+    lMaterial.AmbientFactor.Set(1.)
+    # Add texture for diffuse channel
+    lMaterial.Diffuse.Set(diffuse)
+    lMaterial.DiffuseFactor.Set(1.)
+    lMaterial.TransparencyFactor.Set(transparency)
+    lMaterial.ShadingModel.Set(lShadingName)
+    lMaterial.Shininess.Set(shininess)
+    lMaterial.Specular.Set(specular)
+    lMaterial.SpecularFactor.Set(specularity)
+    return lMaterial
+
+def makeMesh( pScene, pMaterial, mesh, texture = None ):
+    result = fbx.FbxMesh.Create( pScene, mesh.name + "_Mesh")
+    result.InitControlPoints(len(mesh.vertices))
+    index = 0
+    for v in mesh.vertices:
+        v4  = fbx.FbxVector4(v.x, v.y, v.z, 0.0)
+        result.SetControlPointAt(v4, index)
+        index = index + 1
+    index = 0
+    for f in mesh.faces:
+        result.BeginPolygon(index)
+        vi0 = mesh.edges[mesh.faces[index].e0].v0
+        vi1 = mesh.edges[mesh.faces[index].e1].v0
+        vi2 = mesh.edges[mesh.faces[index].e2].v0
+        result.AddPolygon(vi0)
+        result.AddPolygon(vi1)
+        result.AddPolygon(vi2)
+        result.EndPolygon()
+        index = index + 1
+
+    # generate a normal layer
+    result.GenerateNormals()
+
+    # add a layer with uvs and colors
+    layer = result.GetLayer(0)
+    if (not layer):
+        result.CreaterLayer()
+        layer = mesh.GetLayer(0)
+
+    # color layer
+    colorLayerElement = fbx.FbxLayerElementVertexColor.Create(result, "")
+    colorLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+    colorLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+    for v in mesh.vertices:
+        c4 = fbx.FbxColor(v.r, v.g, v.b, v.a)
+        colorLayerElement.GetDirectArray().Add(c4)
+    layer.SetVertexColors(colorLayerElement)
+    # diffuse uv layer
+    uvDiffuseLayerElement = fbx.FbxLayerElementUV.Create( result, 'diffuseUV' )
+    uvDiffuseLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+    uvDiffuseLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+    for v in mesh.vertices:
+        v2 = fbx.FbxVector2(v.u, v.v)
+        uvDiffuseLayerElement.GetDirectArray().Add(v2)
+    layer.SetUVs(uvDiffuseLayerElement, fbx.FbxLayerElement.eTextureDiffuse)
+    if (texture):
+        fbxTexture  = fbx.FbxFileTexture.Create(pScene, mesh.name + "_Texture")
+        fbxTexture.SetFileName(texture)
+        fbxTexture.SetTextureUse( fbx.FbxTexture.eStandard )
+        fbxTexture.SetMappingType( fbx.FbxTexture.eUV )
+        fbxTexture.SetMaterialUse( fbx.FbxFileTexture.eModelMaterial )
+        fbxTexture.SetSwapUV( False )
+        fbxTexture.SetTranslation( 0.0, 0.0 )
+        fbxTexture.SetScale( 1.0, 1.0 )
+        fbxTexture.SetRotation( 0.0, 0.0 )
+        fbxTexture.Alpha.Set( 0.0 )
+        pMaterial.Diffuse.ConnectSrcObject(fbxTexture)
+    return result
+
+def addNode( pScene, nodeName, **kwargs ):
+    # Obtain a reference to the scene's root node.
+    scaling = kwargs["scaling"] if "scaling" in kwargs else (1.0, 1.0, 1.0)
+    location = kwargs["location"] if "location" in kwargs else (0.0, 0.0, 0.0)
+    parent = kwargs["parent"] if "parent" in kwargs else pScene.GetRootNode()
+    newNode = fbx.FbxNode.Create( pScene, nodeName )
+    newNode.LclScaling.Set(fbx.FbxDouble3(scaling[0], scaling[1], scaling[2]))
+    newNode.LclTranslation.Set(fbx.FbxDouble3(location[0], location[1], location[2]))
+    parent.AddChild( newNode )
+    return newNode
+
+def addMaterial( pScene, pNode, nodeName, **kwargs):
+    fbxMaterial = makeMaterial( pScene,
+                                nodeName + "_Material",
+                                **kwargs)
+    pNode.AddMaterial(fbxMaterial)
+    # Create a new node in the scene.
+    return fbxMaterial
+        
+def writeScene(pFilename, pFileFormat = -1, pEmbedMedia = False):
+    lExporter = fbx.FbxExporter.Create(fbxManager, "")
+    print "Readers"
+    numFormats = fbxManager.GetIOPluginRegistry().GetReaderFormatCount()
+    for i in range( 0, numFormats ):
+        print "Format %d " % i
+        print fbxManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
+    numFormats = fbxManager.GetIOPluginRegistry().GetWriterFormatCount()
+    print "Writers"
+    for i in range( 0, numFormats ):
+        print "Format %d " % i
+        print fbxManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
+    if pFileFormat < 0 or pFileFormat >= fbxManager.GetIOPluginRegistry().GetWriterFormatCount():
+        pFileFormat = fbxManager.GetIOPluginRegistry().GetNativeWriterFormat()
+        if not pEmbedMedia:
+            lFormatCount = fbxManager.GetIOPluginRegistry().GetWriterFormatCount()
+            for lFormatIndex in range(lFormatCount):
+                if fbxManager.GetIOPluginRegistry().WriterIsFBX(lFormatIndex):
+                    lDesc = fbxManager.GetIOPluginRegistry().GetWriterFormatDescription(lFormatIndex)
+                    if "ascii" in lDesc:
+                        pFileFormat = lFormatIndex
+                        break
+    
+    if not fbxManager.GetIOSettings():
+        ios = fbx.FbxIOSettings.Create(fbxManager, IOSROOT)
+        fbxManager.SetIOSettings(ios)
+    
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, pEmbedMedia)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_SHAPE, True)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
+    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
+
+    if lExporter.Initialize(pFilename, pFileFormat, fbxManager.GetIOSettings()):
+        lExporter.Export(fbxScene)
+
+    lExporter.Destroy()
+
+def make_mesh(geomfn, name, **kwargs):
+    data = geomfn()
+    emesh = mesh.EditableMesh(name, data)
+    fbxnode = addNode(fbxScene, emesh.name +  "_Node", **kwargs)
+    fbxmaterial = addMaterial(fbxScene, fbxnode, emesh.name + "_Node", **kwargs)
+    fbxmesh = makeMesh(fbxScene, fbxmaterial, emesh, kwargs["texture"] if "texture" in kwargs else None)
+    fbxnode.SetNodeAttribute(fbxmesh)
+    return
+
+if __name__ == "__main__":
+    sceneName = "track"
+    try:
+        import fbx
+    except ImportError:
+        print "Could not import fbx"
+
+    fbxManager = fbx.FbxManager.Create()
+    # Create an IOSettings object
+    ios = fbx.FbxIOSettings.Create(fbxManager, fbx.IOSROOT)
+    fbxManager.SetIOSettings(ios)
+
+    # Create the entity that will hold the scene.
+    fbxScene = fbx.FbxScene.Create(fbxManager, sceneName)
+
+    # octdata = geom.octohedron()
+    # octemesh = mesh.EditableMesh("Octohedron", octdata)
+    # octfbxmesh = makeMesh(fbxScene, octemesh)
+    # octnode = addNode(fbxScene, octemesh.name + "_Node")
+    # octnode.SetNodeAttribute(octfbxmesh)
+    # make_mesh(geom.octohedron, "Octohedron")
+    # make_mesh(geom.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
+    track_data = track.make_track()
+    make_mesh(lambda:  track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
+    writeScene(sceneName + ".fbx")
+    fbxManager.Destroy()
+    del fbxManager

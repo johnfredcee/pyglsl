@@ -5,7 +5,6 @@
 # (see http://www.boost.org/LICENSE_1_0.txt)
 #
 
-import os
 import pyglet
 import camera
 import sphere
@@ -14,8 +13,6 @@ from euclid import *
 from simplui import *
 
 from shadersystem import ShaderSystem
-
-
 
 proj_matrix = Matrix4()
 view_matrix = Matrix4()
@@ -163,20 +160,10 @@ setup_gui()
 window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
-
 try:
-    sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
-    import FbxCommon
-    from fbx import *
-    # Prepare the FBX SDK.
-    (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()    
-    try:
-        print "Ipython import"
-        from IPython.lib.inputhook import enable_gui
-        enable_gui('pyglet')
-    except ImportError:
-        print "Ipython import failed"
-        pyglet.app.run()
-    lSdkManager.Destroy()
+    print "Ipython import"
+    from IPython.lib.inputhook import enable_gui
+    enable_gui('pyglet')
 except ImportError:
-    print 'You need to copy the content in compatible subfolder under ./fbx20151 into your pyglsl install folder.'
+    print "Ipython import failed"
+    pyglet.app.run()
