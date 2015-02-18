@@ -89,7 +89,7 @@ class Shader:
 
 
     def enumerate_attributes(self):
-        param = cffi.c_long()
+        param = cffi.c_int(0)
         pyglet.gl.glGetProgramiv(self.handle, pyglet.gl.GL_ACTIVE_ATTRIBUTES, cffi.byref(param))
         self.attributeCount = param.value
         print "%d attributes " % self.attributeCount
@@ -98,9 +98,9 @@ class Shader:
         cnamelen = param.value
         cname = cffi.create_string_buffer(cnamelen + 1)
         for i in range(0, self.attributeCount):
-            out_len = cffi.c_long()
-            attrib_size = cffi.c_long()
-            attrib_type = cffi.c_ulong()
+            out_len = cffi.c_int(0)
+            attrib_size = cffi.c_int(0)
+            attrib_type = cffi.c_uint(0)
             pyglet.gl.glGetActiveAttrib(self.handle, i, cnamelen, cffi.byref(out_len),
                               cffi.byref(attrib_size), cffi.byref(attrib_type), cname)
             print "Attrib size %d, type %04x, name %s " %   \
@@ -111,7 +111,7 @@ class Shader:
         return
 
     def enumerate_uniforms(self):
-        param = cffi.c_long()
+        param = cffi.c_int(0)
         pyglet.gl.glGetProgramiv(self.handle,
                             pyglet.gl.GL_ACTIVE_UNIFORMS, cffi.byref(param))
         self.uniformCount = param.value
@@ -121,9 +121,9 @@ class Shader:
         cnamelen = param.value
         cname = cffi.create_string_buffer(cnamelen + 1)
         for i in range(0, self.uniformCount):
-            out_len = cffi.c_long()
-            uniform_size = cffi.c_long()
-            uniform_type = cffi.c_ulong()
+            out_len = cffi.c_int()
+            uniform_size = cffi.c_int()
+            uniform_type = cffi.c_uint()
             pyglet.gl.glGetActiveUniform(self.handle, i,
                                     cnamelen, cffi.byref(out_len),
                                     cffi.byref(uniform_size),

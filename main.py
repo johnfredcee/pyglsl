@@ -1,11 +1,10 @@
 #
-# Copyright Tristam Macdonald 2008.
-#
 # Distributed under the Boost Software License, Version 1.0
 # (see http://www.boost.org/LICENSE_1_0.txt)
 #
 
 import os
+import sys
 import pyglet
 import camera
 import sphere
@@ -72,6 +71,7 @@ def on_draw():
     pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
     pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
     mainShader = shaderSystem["main"]
+    gradientShader = shaderSystem["gradient"]
     mainShader.bind()
     mainShader.uniform_matrixf("projMatrix", proj_matrix)
     cam.apply(mainShader)
@@ -141,11 +141,13 @@ def setup():
     pyglet.gl.glClearColor(1, 1, 1, 1)
     shaderSystem = ShaderSystem()
     mainShader = shaderSystem.createShader("main")
+    mainShader.bind()
     grid_image = pyglet.image.load('images/grid.png')
     grid_texture = grid_image.get_texture()
     planet = sphere.Sphere(1.0)
     cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
     mainShader.unbind()
+    gradientShader = shaderSystem.createShader("gradient")
 
 # schedule an empty update function, at 60 frames/second
 pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
@@ -164,9 +166,9 @@ window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
 
+sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
+import FbxCommon
 try:
-    sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
-    import FbxCommon
     from fbx import *
     # Prepare the FBX SDK.
     (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()    
@@ -175,8 +177,8 @@ try:
         from IPython.lib.inputhook import enable_gui
         enable_gui('pyglet')
     except ImportError:
-        print "Ipython import failed"
-        pyglet.app.run()
+         print "Ipython import failed"
+    pyglet.app.run()
     lSdkManager.Destroy()
 except ImportError:
     print 'You need to copy the content in compatible subfolder under ./fbx20151 into your pyglsl install folder.'
