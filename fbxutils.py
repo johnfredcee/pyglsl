@@ -143,16 +143,16 @@ def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
         
 def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
     lExporter = fbx.FbxExporter.Create(pManager, "")
-    print "Readers"
+    #print "Readers"
     numFormats = pManager.GetIOPluginRegistry().GetReaderFormatCount()
-    for i in range( 0, numFormats ):
-        print "Format %d " % i
-        print pManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
+    #for i in range( 0, numFormats ):
+    #    print "Format %d " % i
+    #    print pManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
     numFormats = pManager.GetIOPluginRegistry().GetWriterFormatCount()
-    print "Writers"
-    for i in range( 0, numFormats ):
-        print "Format %d " % i
-        print pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
+    #print "Writers"
+    #for i in range( 0, numFormats ):
+    #   print "Format %d " % i
+    #   print pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
     if pFileFormat < 0 or pFileFormat >= pManager.GetIOPluginRegistry().GetWriterFormatCount():
         pFileFormat = pManager.GetIOPluginRegistry().GetNativeWriterFormat()
         if not pEmbedMedia:
