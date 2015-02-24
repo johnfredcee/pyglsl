@@ -60,6 +60,7 @@ def make_spline(p0, p1, p2, p3, roll0, roll1, width, segments):
         up = euclid.Vector3(0.0, 0.0, 1.0)
         roll = roll0 + (roll1-roll0) * (3.0*t*t-2.0*t*t*t)
         (forward, normal, perp) = project(d0, up)
+        print forward, perp, normal
 
         # left back
         leftOffset = perp * -width
@@ -119,14 +120,14 @@ def make_vertex(point):
     return euclid.Point3(point["x"], point["y"], point["z"])
 
 def make_track():
-    track_points = [ { "x":-8000.0, "y":-7.0, "z":2000.0},
-                     { "x":-5000.0, "y":-7.0, "z":0000.0},
-                     { "x":5000.0,  "y":-7.0, "z":0000.0},
-                     { "x":8000.0,  "y":-7.0, "z":2000.0},
-                     { "x":8000.0,  "y":-7.0, "z":4000.0},
-                     { "x":5000.0,  "y":-7.0, "z":6000.0},
-                     { "x":-5000.0, "y":-7.0, "z":6000.0},
-                     { "x":-8000.0, "y":-7.0, "z":4000.0} ]
+    track_points = [ { "x":-8000.0, "z":-7.0, "y":2000.0},
+                     { "x":-5000.0, "z":-7.0, "y":0000.0},
+                     { "x":5000.0,  "z":-7.0, "y":0000.0},
+                     { "x":8000.0,  "z":-7.0, "y":2000.0},
+                     { "x":8000.0,  "z":-7.0, "y":4000.0},
+                     { "x":5000.0,  "z":-7.0, "y":6000.0},
+                     { "x":-5000.0, "z":-7.0, "y":6000.0},
+                     { "x":-8000.0, "z":-7.0, "y":4000.0} ]
     track_width = 800.0
     track = { "verts" : [], "faces" : [], "uvs" : [], "colors" : [] }
     for i in range(1, len(track_points) + 1):

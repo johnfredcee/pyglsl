@@ -194,7 +194,7 @@ def make_mesh(geomfn, name, **kwargs):
     return
 
 if __name__ == "__main__":
-    sceneName = "track"
+    sceneName = "Track"
     try:
         import fbx
     except ImportError:
