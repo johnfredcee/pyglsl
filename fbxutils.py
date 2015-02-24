@@ -5,16 +5,13 @@ import euclid
 import mesh
 import geom
 import track
-
-fbxManager = None
-fbxScene = None
-meshes = []
+import fbx
 
 ###############################################################
 # Helper Function(s).                                         #
 ###############################################################
 
-def makeMaterial( pScene, materialName, **kwargs ):
+def makeMaterial(pManager, pScene, materialName, **kwargs ):
     lMaterialName = materialName
     lShadingName  = "Phong"
     lBlack = fbx.FbxDouble3(0.0, 0.0, 0.0)
@@ -51,7 +48,7 @@ def makeMaterial( pScene, materialName, **kwargs ):
         specularity = kwargs["specularity"]
     else:
         specularity = 0.3
-    lMaterial = fbx.FbxSurfacePhong.Create(fbxManager, lMaterialName)
+    lMaterial = fbx.FbxSurfacePhong.Create(pManager, lMaterialName)
     # Generate primary and secondary colors.
     lMaterial.Emissive.Set(emissive)
     lMaterial.Ambient.Set(ambient)
@@ -136,60 +133,60 @@ def addNode( pScene, nodeName, **kwargs ):
     parent.AddChild( newNode )
     return newNode
 
-def addMaterial( pScene, pNode, nodeName, **kwargs):
-    fbxMaterial = makeMaterial( pScene,
+def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
+    fbxMaterial = makeMaterial( pManager, pScene,
                                 nodeName + "_Material",
                                 **kwargs)
     pNode.AddMaterial(fbxMaterial)
     # Create a new node in the scene.
     return fbxMaterial
         
-def writeScene(pFilename, pFileFormat = -1, pEmbedMedia = False):
-    lExporter = fbx.FbxExporter.Create(fbxManager, "")
+def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
+    lExporter = fbx.FbxExporter.Create(pManager, "")
     print "Readers"
-    numFormats = fbxManager.GetIOPluginRegistry().GetReaderFormatCount()
+    numFormats = pManager.GetIOPluginRegistry().GetReaderFormatCount()
     for i in range( 0, numFormats ):
         print "Format %d " % i
-        print fbxManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
-    numFormats = fbxManager.GetIOPluginRegistry().GetWriterFormatCount()
+        print pManager.GetIOPluginRegistry().GetReaderFormatDescription( i )
+    numFormats = pManager.GetIOPluginRegistry().GetWriterFormatCount()
     print "Writers"
     for i in range( 0, numFormats ):
         print "Format %d " % i
-        print fbxManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
-    if pFileFormat < 0 or pFileFormat >= fbxManager.GetIOPluginRegistry().GetWriterFormatCount():
-        pFileFormat = fbxManager.GetIOPluginRegistry().GetNativeWriterFormat()
+        print pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
+    if pFileFormat < 0 or pFileFormat >= pManager.GetIOPluginRegistry().GetWriterFormatCount():
+        pFileFormat = pManager.GetIOPluginRegistry().GetNativeWriterFormat()
         if not pEmbedMedia:
-            lFormatCount = fbxManager.GetIOPluginRegistry().GetWriterFormatCount()
+            lFormatCount = pManager.GetIOPluginRegistry().GetWriterFormatCount()
             for lFormatIndex in range(lFormatCount):
-                if fbxManager.GetIOPluginRegistry().WriterIsFBX(lFormatIndex):
-                    lDesc = fbxManager.GetIOPluginRegistry().GetWriterFormatDescription(lFormatIndex)
+                if pManager.GetIOPluginRegistry().WriterIsFBX(lFormatIndex):
+                    lDesc = pManager.GetIOPluginRegistry().GetWriterFormatDescription(lFormatIndex)
                     if "ascii" in lDesc:
                         pFileFormat = lFormatIndex
                         break
     
-    if not fbxManager.GetIOSettings():
-        ios = fbx.FbxIOSettings.Create(fbxManager, IOSROOT)
-        fbxManager.SetIOSettings(ios)
+    if not pManager.GetIOSettings():
+        ios = fbx.FbxIOSettings.Create(pManager, IOSROOT)
+        pManager.SetIOSettings(ios)
     
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, pEmbedMedia)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_SHAPE, True)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
-    fbxManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, pEmbedMedia)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_SHAPE, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
+    pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
 
-    if lExporter.Initialize(pFilename, pFileFormat, fbxManager.GetIOSettings()):
-        lExporter.Export(fbxScene)
+    if lExporter.Initialize(pFilename, pFileFormat, pManager.GetIOSettings()):
+        lExporter.Export(pScene)
 
     lExporter.Destroy()
 
-def make_mesh(geomfn, name, **kwargs):
+def make_mesh(pManager, pScene, geomfn, name, **kwargs):
     data = geomfn()
     emesh = mesh.EditableMesh(name, data)
-    fbxnode = addNode(fbxScene, emesh.name +  "_Node", **kwargs)
-    fbxmaterial = addMaterial(fbxScene, fbxnode, emesh.name + "_Node", **kwargs)
-    fbxmesh = makeMesh(fbxScene, fbxmaterial, emesh, kwargs["texture"] if "texture" in kwargs else None)
+    fbxnode = addNode(pScene, emesh.name +  "_Node", **kwargs)
+    fbxmaterial = addMaterial(pManager, pScene, fbxnode, emesh.name + "_Node", **kwargs)
+    fbxmesh = makeMesh(pScene, fbxmaterial, emesh, kwargs["texture"] if "texture" in kwargs else None)
     fbxnode.SetNodeAttribute(fbxmesh)
     return
 
