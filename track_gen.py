@@ -3,7 +3,7 @@ import sys
 import math
 import euclid
 import mesh
-import geom
+import geomgen
 import track
 import fbxutils
 
@@ -26,13 +26,13 @@ if __name__ == "__main__":
     # Create the entity that will hold the scene.
     fbxScene = fbx.FbxScene.Create(fbxManager, sceneName)
 
-    # octdata = geom.octohedron()
+    # octdata = geomgen.octohedron()
     # octemesh = mesh.EditableMesh("Octohedron", octdata)
     # octfbxmesh = makeMesh(fbxScene, octemesh)
     # octnode = addNode(fbxScene, octemesh.name + "_Node")
     # octnode.SetNodeAttribute(octfbxmesh)
-    # make_mesh(geom.octohedron, "Octohedron")
-    # make_mesh(geom.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
+    # make_mesh(geomgen.octohedron, "Octohedron")
+    # make_mesh(geomgen.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
     track_data = track.make_track()
     fbxutils.make_mesh(fbxManager, fbxScene, lambda:  track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
     fbxutils.writeScene(fbxManager, fbxScene, sceneName + ".fbx")

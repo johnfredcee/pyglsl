@@ -3,7 +3,7 @@ import sys
 import math
 import euclid
 import mesh
-import geom
+import geomgen
 import track
 import fbx
 
@@ -181,8 +181,8 @@ def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = Fals
 
     lExporter.Destroy()
 
-def make_mesh(pManager, pScene, geomfn, name, **kwargs):
-    data = geomfn()
+def make_mesh(pManager, pScene, geomgenfn, name, **kwargs):
+    data = geomgenfn()
     emesh = mesh.EditableMesh(name, data)
     fbxnode = addNode(pScene, emesh.name +  "_Node", **kwargs)
     fbxmaterial = addMaterial(pManager, pScene, fbxnode, emesh.name + "_Node", **kwargs)

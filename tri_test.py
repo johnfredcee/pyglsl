@@ -3,7 +3,7 @@ import sys
 import math
 import euclid
 import mesh
-import geom
+import geomgen
 import track
 import fbxutils
 
@@ -30,13 +30,13 @@ if __name__ == "__main__":
     # Create the entity that will hold the scene.
     fbxScene = fbx.FbxScene.Create(fbxManager, sceneName)
 
-    # octdata = geom.octohedron()
+    # octdata = geomgen.octohedron()
     # octemesh = mesh.EditableMesh("Octohedron", octdata)
     # octfbxmesh = makeMesh(fbxScene, octemesh)
     # octnode = addNode(fbxScene, octemesh.name + "_Node")
     # octnode.SetNodeAttribute(octfbxmesh)
-    # make_mesh(geom.octohedron, "Octohedron")
-    # make_mesh(geom.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
+    # make_mesh(geomgen.octohedron, "Octohedron")
+    # make_mesh(geomgen.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
     tripoints = [ { "x" : 1.0, "y" : 0.0, "z" : 0.0 },
                   { "x" : 0.0, "y" : 1.0, "z" : 0.0 },
                   { "x" : 0.0, "y" : 0.0, "z" : 1.0 } ]
