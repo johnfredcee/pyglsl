@@ -142,6 +142,7 @@ def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
     return fbxMaterial
         
 def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
+    print "Writing " + pFilename
     lExporter = fbx.FbxExporter.Create(pManager, "")
     #print "Readers"
     numFormats = pManager.GetIOPluginRegistry().GetReaderFormatCount()
