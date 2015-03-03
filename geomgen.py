@@ -23,7 +23,7 @@ def octohedron():
         (5, 2, 3),
         (5, 3, 4),
         (5, 4, 1) ]
-    return { "verts" : verts, "faces": faces }
+    return { "vertices" : verts, "faces": faces }
 
 def surface(slices, stacks, func):
     verts = []
@@ -146,14 +146,14 @@ def make_sphere(slices = 32, stacks = 32):
     verts, faces = surface(slices, stacks, sphere)
     print verts
     print faces
-    return { "verts" : verts, "faces" : faces }
+    return { "vertices" : verts, "faces" : faces }
 
 def make_klein(slices = 32, stacks = 32):
     verts, faces = surface(slices, stacks, klein)
-    return { "verts" : verts, "faces" : faces }
+    return { "vertices" : verts, "faces" : faces }
 
 def make_knot(slices = 32, stacks = 32):
     slices, stacks = 32, 32
     verts, faces = parametric.surface(slices, stacks, granny)
-    return { "verts" : verts, "faces" : faces }
+    return { "vertices" : verts, "faces" : faces }
 

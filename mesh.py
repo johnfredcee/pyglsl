@@ -1,45 +1,37 @@
 import euclid
 
+class Color:
+    def __init__(self, r, g, b, a):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
+
+    def __len__:
+        return 4
+
+    def __getitem__(self, key):
+        return (self.r, self.g, self.b, self.a)[key]
+    
+class UV:
+    def __init__(self, u, v):
+        self.v = v
+        self.u = u
+
+    def __len__(self):
+        return 2
+    def __getitem__(self, key):
+        return (u,v)[key]
+    
 class Vertex:
     def __init__(self, x, y, z):
         self.x = round(x, 4)
         self.y = round(y, 4)
         self.z = round(z, 4)
         self.v = euclid.Vector3(self.x,self.y,self.z)
-        self.r = 0.0
-        self.g = 0.0
-        self.b = 0.0
-        self.a = 0.0
-        self.u = 0.0
-        self.v = 0.0
-
-    def setUV(self, u, v):
-        self.u = u
-        self.v = v
-
-    def setColor(self, r, g, b, a = 0.0):
-        self.r = r
-        self.g = g
-        self.b = b
-        self.a = a
-
-    def __init__(self, **kwargs):
-        self.x = round(kwargs["vert"][0], 4)
-        self.y = round(kwargs["vert"][1], 4)
-        self.z = round(kwargs["vert"][2], 4)
-        self.v = euclid.Vector3(self.x,self.y,self.z)
-        self.r = round(kwargs["color"][0], 4)
-        self.g = round(kwargs["color"][1], 4)
-        self.b = round(kwargs["color"][2], 4)
-        if (len(kwargs["color"]) == 3):
-            self.a = 0.0
-        else:
-            self.a = round(kwargs["color"][3], 4)
-        self.u = round(kwargs["uv"][0], 4)
-        self.v = round(kwargs["uv"][1], 4)
-
+ 
     def __hash__(self):
-        return hash((self.x, self.y, self.z, self.u, self.v))
+        return hash((self.x, self.y, self.z))
 
     def __eq__(self, other):
         return other and self.x == other.x and self.y == other.y and self.z == other.z and self.u ==  other.u and self.v == other.v
@@ -54,6 +46,12 @@ class Edge:
         self.v1 = vi1
         self.mesh = mesh
 
+    def __len__(self):
+        return 2
+    
+    def __getitem__(self, key):
+        return (self.v0,self.v1)[key]
+
     def verts(self):
         return (self.mesh.vertices[self.v0], self.mesh.vertices[self.v1])
 
@@ -64,6 +62,12 @@ class Tri:
         self.e2 = ei2
         self.mesh = mesh
 
+    def __len__(self):
+        return 3
+    
+    def __getitem__(self, key):
+        return (self.e0,self.e1, self.e2)[key]
+    
     def verts(self):
         return (self.mesh.vertices[self.mesh.edges[self.e0][0]],
                 self.mesh.vertices[self.mesh.edges[self.e1][0]],
@@ -73,6 +77,8 @@ class Tri:
 class EditableMesh:
     def __init__(self, name, data = None):
         self.vertices = []
+        self.colors = []
+        self.uvs = []
         self.vertmap = {}
         self.edges = []
         self.edgemap = {}
@@ -81,11 +87,12 @@ class EditableMesh:
         if (data != None):
             self.addPolyFaces(data)
         
-        
-    def addVertex(self, v):
+    def addVertex(self, v, uv = None, color = None):
         if (v in self.vertmap):
             return self.vertmap[v]
         self.vertices = self.vertices + [ v ]
+        self.uvs = self.uvx + [ uv ]
+        self.colors = self.colors + [ color ]
         self.vertmap[v] = len(self.vertices) - 1
         return len(self.vertices) - 1
 
@@ -180,14 +187,14 @@ class EditableMesh:
     def addPolyFaces(self, p):
         for face in p["faces"]:
             for vi in face:
-                assert(vi < len(p["verts"]))                
+                assert(vi < len(p["vertices"]))                
         vis = []
         vi = 0
-        for v in p["verts"]:
-            vuv = p["uvs"][vi] if p["uvs"] else (0.0, 0.0)
-            vcolor = p["colors"][vi] if p["colors"] else (1.0, 1.0, 1.0, 0.0)
-            vertex = Vertex(vert = v, color = vcolor, uv = vuv)            
-            vis = vis + [ self.addVertex(vertex) ]
+        for v in p["vertices"]:
+            vuv = p["uvs"][vi] if p["uvs"] else None
+            vcolor = p["colors"][vi] if p["colors"] else None
+            vertex = Vertex(v[0], v[1], v[2])            
+            vis = vis + [ self.addVertex(vertex, vuv, vcolor) ]
             vi = vi + 1
         for f in p["faces"]:
             assert(len(f) > 2)
@@ -198,3 +205,29 @@ class EditableMesh:
             if (len(f) > 4):
                 polyface = map(lambda x: vis[x], p["faces"])
                 self.addPolyVerts(polyface)
+    def has_colors(self):
+        return len(for x in self.colors if x != None) == len(self.vertices) 
+    def has_uvs(self):
+        return len(for x in self.uvs if x != None) == len(self.vertices) 
+        
+def vertex_walk(mesh):
+    index = 0
+    while index <  len(mesh.vertcies):
+        yield mesh.vertices[index].v
+        index = index + 1
+
+def color_walk(mesh):
+    index = 0
+    while index <  len(mesh.vertcies):
+        vertex = mesh.vertices[index];
+        yield (vertex.r, vertex.g, vertex.b, vertex.a)
+        index = index + 1
+
+def uv_walk(mesh):
+    index = 0
+    while index <  len(mesh.vertcies):
+        vertex = mesh.vertices[index];
+        yield (vertex.u, vertex.v)
+        index = index + 1
+        
+        

@@ -149,7 +149,7 @@ def surface(rules, slices = 32, stacks = 32):
     max_depth = rules["max_depth"]
     r = rules["entry"]
     process_rule(r, rules, max_depth, verts, faces)
-    return { "verts" : verts, "faces" : faces }
+    return { "vertices" : verts, "faces" : faces }
 
 if __name__ == "__main__":        
     rules = { "max_depth" : 20,

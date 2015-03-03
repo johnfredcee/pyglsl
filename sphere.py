@@ -1,5 +1,6 @@
 
 import math
+import mesh
 import pyglet
 from pyglet.gl import *
 from euclid import *
@@ -13,6 +14,7 @@ class Sphere(object):
             y = math.sqrt(radius * radius - u * u) * math.sin(theta)
             z = u
             return (x, y, z)
+        self.mesh = []
         self.vertices = []
         self.normals = []
         self.uvs = []

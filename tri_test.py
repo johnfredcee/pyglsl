@@ -44,9 +44,9 @@ if __name__ == "__main__":
                { "u" : 0.0, "v" : 1.0 },
                { "u" : 0.0, "v" : 0.0 } ]
 
-    tridata = { "verts" : [], "faces" : [], "uvs" : [], "colors" : [] }
+    tridata = { "vertices" : [], "faces" : [], "uvs" : [], "colors" : [] }
     for i in range(0, len(tripoints)):
-        tridata["verts"].append(make_vertex(tripoints[i]))
+        tridata["vertices"].append(make_vertex(tripoints[i]))
         tridata["colors"].append((128, 128, 128));
         tridata["uvs"].append((triuvs[i]["u"], triuvs[i]["v"]));
     tridata["faces"].append((0,1,2))

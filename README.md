@@ -1,10 +1,12 @@
 
-At the moment, this is just a little proof of context, derived from Tristam MacDonald's
-code http://swiftcoder.wordpress.com/2008/12/19/simple-glsl-wrapper-for-pyglet/
+This was originally derived from [Tristam MacDonald's
+code]{http://swiftcoder.wordpress.com/2008/12/19/simple-glsl-wrapper-for-pyglet/} but is rapidly becoming a very disorganised test bed for glsl and procedural geometry generation ideas. Fbx output is supported.
 
-This requires the current version of pyglet (1.4) found at
+This requires the current hg version of pyglet found at:
 
 hg clone https://code.google.com/p/pyglet/
+
+The latest *binary* release will not work, it must be built from source.
 
 It also requires pyeuclid for maths, to be found here..
 

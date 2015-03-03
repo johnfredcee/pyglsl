@@ -114,7 +114,7 @@ def make_spline(p0, p1, p2, p3, roll0, roll1, width, segments):
         faces.append(((i*4), (i*4+1), (i*4+2)))
         faces.append(((i*4+2), (i*4+1), (i*4+3)))
         
-    return { "verts" : verts, "faces" : faces, "colors" : colors, "uvs" : uvs }
+    return { "vertices" : verts, "faces" : faces, "colors" : colors, "uvs" : uvs }
 
 def make_vertex(point):
     return euclid.Point3(point["x"], point["y"], point["z"])
@@ -129,7 +129,7 @@ def make_track():
                      { "x":-5000.0, "z":-7.0, "y":6000.0},
                      { "x":-8000.0, "z":-7.0, "y":4000.0} ]
     track_width = 800.0
-    track = { "verts" : [], "faces" : [], "uvs" : [], "colors" : [] }
+    track = { "vertices" : [], "faces" : [], "uvs" : [], "colors" : [] }
     for i in range(1, len(track_points) + 1):
         i0 = (i - 1) % len(track_points)
         i1 = (i) % len(track_points)
@@ -142,8 +142,8 @@ def make_track():
                               track_points[i1]["roll"] if "roll" in track_points[i1] else 0.0,
                               track_points[i2]["roll"] if "roll" in track_points[i2] else 0.0,
                               track_width, 30)
-        vi0 = len(track["verts"])
-        track = { "verts" : track["verts"] + segment["verts"],
+        vi0 = len(track["vertices"])
+        track = { "vertices" : track["vertices"] + segment["vertices"],
                   "uvs" : track["uvs"] + segment["uvs"],
                   "colors" : track["colors"] + segment["colors"],
                   "faces" : track["faces"] + map(lambda x: (x[0] + vi0, x[1] + vi0, x[2] + vi0), segment["faces"]) }

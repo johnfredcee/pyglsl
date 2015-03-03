@@ -93,21 +93,23 @@ def makeMesh( pScene, pMaterial, mesh, texture = None ):
         layer = mesh.GetLayer(0)
 
     # color layer
-    colorLayerElement = fbx.FbxLayerElementVertexColor.Create(result, "")
-    colorLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
-    colorLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
-    for v in mesh.vertices:
-        c4 = fbx.FbxColor(v.r, v.g, v.b, v.a)
+    if (mesh.has_colors()):
+        colorLayerElement = fbx.FbxLayerElementVertexColor.Create(result, "")
+        colorLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+        colorLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+        for c in mesh.colors
+        c4 = fbx.FbxColor(c.r, c.g, c.b, c.a)
         colorLayerElement.GetDirectArray().Add(c4)
-    layer.SetVertexColors(colorLayerElement)
+        layer.SetVertexColors(colorLayerElement)
     # diffuse uv layer
-    uvDiffuseLayerElement = fbx.FbxLayerElementUV.Create( result, 'diffuseUV' )
-    uvDiffuseLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
-    uvDiffuseLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
-    for v in mesh.vertices:
-        v2 = fbx.FbxVector2(v.u, v.v)
-        uvDiffuseLayerElement.GetDirectArray().Add(v2)
-    layer.SetUVs(uvDiffuseLayerElement, fbx.FbxLayerElement.eTextureDiffuse)
+    if (mesh.has_uvs()):
+        uvDiffuseLayerElement = fbx.FbxLayerElementUV.Create( result, 'diffuseUV' )
+        uvDiffuseLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
+        uvDiffuseLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
+        for uv in mesh.uvs:
+            v2 = fbx.FbxVector2(uv.u, uv.v)
+            uvDiffuseLayerElement.GetDirectArray().Add(v2)
+            layer.SetUVs(uvDiffuseLayerElement, fbx.FbxLayerElement.eTextureDiffuse)
     if (texture):
         fbxTexture  = fbx.FbxFileTexture.Create(pScene, mesh.name + "_Texture")
         fbxTexture.SetFileName(texture)
