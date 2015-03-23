@@ -171,7 +171,7 @@ import FbxCommon
 try:
     from fbx import *
     # Prepare the FBX SDK.
-    (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()    
+    (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()
     try:
         print "Ipython import"
         from IPython.lib.inputhook import enable_gui
