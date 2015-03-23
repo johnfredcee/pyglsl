@@ -147,6 +147,7 @@ def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
     return fbxMaterial
 
 def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
+    print "Writing " + pFilename
     lExporter = fbx.FbxExporter.Create(pManager, "")
     #print "Readers"
     numFormats = pManager.GetIOPluginRegistry().GetReaderFormatCount()
@@ -180,7 +181,10 @@ def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = Fals
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
-
+    unrealSystem = fbx.FbxAxisSystem(fbx.FbxAxisSystem.eMayaZUp)
+    sourceSystem = pScene.GetGlobalSettings().GetAxisSystem()
+    if sourceSystem != unrealSystem:
+        unrealSystem.ConvertScene(pScene)
     if lExporter.Initialize(pFilename, pFileFormat, pManager.GetIOSettings()):
         lExporter.Export(pScene)
 
