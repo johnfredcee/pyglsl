@@ -63,6 +63,9 @@ def makeMaterial(pManager, pScene, materialName, **kwargs ):
     lMaterial.SpecularFactor.Set(specularity)
     return lMaterial
 
+#
+# Construct an fbx mesh from an emesh
+#
 def makeMesh( pScene, pMaterial, mesh, texture = None ):
     result = fbx.FbxMesh.Create( pScene, mesh.name + "_Mesh")
     result.InitControlPoints(len(mesh.vertices))
@@ -97,10 +100,10 @@ def makeMesh( pScene, pMaterial, mesh, texture = None ):
         colorLayerElement = fbx.FbxLayerElementVertexColor.Create(result, "")
         colorLayerElement.SetMappingMode( fbx.FbxLayerElement.eByControlPoint )
         colorLayerElement.SetReferenceMode( fbx.FbxLayerElement.eDirect )
-        for c in mesh.colors
-        c4 = fbx.FbxColor(c.r, c.g, c.b, c.a)
-        colorLayerElement.GetDirectArray().Add(c4)
-        layer.SetVertexColors(colorLayerElement)
+        for c in mesh.colors:
+            c4 = fbx.FbxColor(c.r, c.g, c.b, c.a)
+            colorLayerElement.GetDirectArray().Add(c4)
+            layer.SetVertexColors(colorLayerElement)
     # diffuse uv layer
     if (mesh.has_uvs()):
         uvDiffuseLayerElement = fbx.FbxLayerElementUV.Create( result, 'diffuseUV' )
@@ -142,7 +145,7 @@ def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
     pNode.AddMaterial(fbxMaterial)
     # Create a new node in the scene.
     return fbxMaterial
-        
+
 def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
     lExporter = fbx.FbxExporter.Create(pManager, "")
     #print "Readers"
@@ -154,7 +157,7 @@ def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = Fals
     #print "Writers"
     #for i in range( 0, numFormats ):
     #   print "Format %d " % i
-    #   print pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )    
+    #   print pManager.GetIOPluginRegistry().GetWriterFormatDescription( i )
     if pFileFormat < 0 or pFileFormat >= pManager.GetIOPluginRegistry().GetWriterFormatCount():
         pFileFormat = pManager.GetIOPluginRegistry().GetNativeWriterFormat()
         if not pEmbedMedia:
@@ -165,11 +168,11 @@ def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = Fals
                     if "ascii" in lDesc:
                         pFileFormat = lFormatIndex
                         break
-    
+
     if not pManager.GetIOSettings():
         ios = fbx.FbxIOSettings.Create(pManager, IOSROOT)
         pManager.SetIOSettings(ios)
-    
+
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
     pManager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, pEmbedMedia)
@@ -191,4 +194,3 @@ def make_mesh(pManager, pScene, geomgenfn, name, **kwargs):
     fbxmesh = makeMesh(pScene, fbxmaterial, emesh, kwargs["texture"] if "texture" in kwargs else None)
     fbxnode.SetNodeAttribute(fbxmesh)
     return
-

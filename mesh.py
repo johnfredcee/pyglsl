@@ -1,7 +1,7 @@
 import euclid
 
 class Color:
-    def __init__(self, r, g, b, a):
+    def __init__(self, r, g, b, a = 0.):
         self.r = r
         self.g = g
         self.b = b
@@ -34,7 +34,7 @@ class Vertex:
         return hash((self.x, self.y, self.z))
 
     def __eq__(self, other):
-        return other and self.x == other.x and self.y == other.y and self.z == other.z and self.u ==  other.u and self.v == other.v
+        return other and self.x == other.x and self.y == other.y and self.z == other.z
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -91,7 +91,7 @@ class EditableMesh:
         if (v in self.vertmap):
             return self.vertmap[v]
         self.vertices = self.vertices + [ v ]
-        self.uvs = self.uvx + [ uv ]
+        self.uvs = self.uvs + [ uv ]
         self.colors = self.colors + [ color ]
         self.vertmap[v] = len(self.vertices) - 1
         return len(self.vertices) - 1
@@ -194,6 +194,11 @@ class EditableMesh:
             vuv = p["uvs"][vi] if p["uvs"] else None
             vcolor = p["colors"][vi] if p["colors"] else None
             vertex = Vertex(v[0], v[1], v[2])
+            if (len(vcolor) == 4):
+                vcolor = Color(vcolor[0], vcolor[1], vcolor[2], vcolor[3])
+            else:
+                vcolor = Color(vcolor[0], vcolor[1], vcolor[2])
+            vuv = UV(vuv[0], vuv[1])
             vis = vis + [ self.addVertex(vertex, vuv, vcolor) ]
             vi = vi + 1
         for f in p["faces"]:

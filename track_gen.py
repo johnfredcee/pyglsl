@@ -1,11 +1,14 @@
 
 import sys
+import os
+sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
 import math
 import euclid
 import mesh
 import geomgen
 import track
 import fbxutils
+import fbx
 
 fbxManager = None
 fbxScene = None
@@ -13,11 +16,6 @@ meshes = []
 
 if __name__ == "__main__":
     sceneName = "Track"
-    try:
-        import fbx
-    except ImportError:
-        print "Could not import fbx"
-
     fbxManager = fbx.FbxManager.Create()
     # Create an IOSettings object
     ios = fbx.FbxIOSettings.Create(fbxManager, fbx.IOSROOT)
@@ -34,8 +32,7 @@ if __name__ == "__main__":
     # make_mesh(geomgen.octohedron, "Octohedron")
     # make_mesh(geomgen.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
     track_data = track.make_track()
-    fbxutils.make_mesh(fbxManager, fbxScene, lambda:  track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
+    fbxutils.make_mesh(fbxManager, fbxScene, lambda: track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
     fbxutils.writeScene(fbxManager, fbxScene, sceneName + ".fbx")
     fbxManager.Destroy()
     del fbxManager
-
