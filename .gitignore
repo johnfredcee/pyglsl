@@ -1,2 +1,5 @@
 # Compiled python
 *.pyc
+aqua_viewer
+examples
+.vscode
