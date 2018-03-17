@@ -882,7 +882,7 @@ def DisplayPolygons(pMesh):
                     header = "            Color vertex (on layer %d): " % l 
 
                     if leVtxc.GetMappingMode() == fbx.FbxLayerElement.eByControlPoint:
-                        if leVtxc.GetReferenceMode() == fbx,FbxLayerElement.eDirect:
+                        if leVtxc.GetReferenceMode() == fbx.FbxLayerElement.eDirect:
                             DisplayColor(header, leVtxc.GetDirectArray().GetAt(lControlPointIndex))
                         elif leVtxc.GetReferenceMode() == fbx.FbxLayerElement.eIndexToDirect:
                                 id = leVtxc.GetIndexArray().GetAt(lControlPointIndex)
@@ -1427,8 +1427,8 @@ def DisplayPose(pScene):
 
 ## -- animation 
 def DisplayAnimation(pScene):
-    for i in range(pScene.GetSrcObjectCount(fbx.FbxAnimStack.ClassId)):
-        lAnimStack = pScene.GetSrcObject(fbx.FbxAnimStack.ClassId, i)
+     for i in range(pScene.GetSrcObjectCount(FbxCriteria.ObjectType(FbxAnimStack.ClassId))):
+        lAnimStack = pScene.GetSrcObject(FbxCriteria.ObjectType(FbxAnimStack.ClassId), i)
 
         lOutputString = "Animation Stack Name: "
         lOutputString += lAnimStack.GetName()
@@ -1439,7 +1439,7 @@ def DisplayAnimation(pScene):
         DisplayAnimationStack(lAnimStack, pScene.GetRootNode(), False)
 
 def DisplayAnimationStack(pAnimStack, pNode, isSwitcher):
-    nbAnimLayers = pAnimStack.GetSrcObjectCount(fbx.FbxAnimLayer.ClassId)
+    nbAnimLayers = pAnimStack.GetSrcObjectCount(FbxCriteria.ObjectType(FbxAnimLayer.ClassId))
 
     lOutputString = "Animation stack contains "
     lOutputString += str(nbAnimLayers)
@@ -1447,7 +1447,7 @@ def DisplayAnimationStack(pAnimStack, pNode, isSwitcher):
     print(lOutputString)
 
     for l in range(nbAnimLayers):
-        lAnimLayer = pAnimStack.GetSrcObject(fbx.FbxAnimLayer.ClassId, l)
+        lAnimLayer = pAnimStack.GetSrcObject(FbxCriteria.ObjectType(FbxAnimLayer.ClassId), l)
 
         lOutputString = "AnimLayer "
         lOutputString += str(l)
@@ -1618,7 +1618,7 @@ def DisplayChannels(pNode, pAnimLayer, DisplayCurve, DisplayListCurve, isSwitche
     # Display curves specific to properties
     lProperty = pNode.GetFirstProperty()
     while lProperty.IsValid():
-        if lProperty.GetFlag(fbx.fbx.FbxPropertyFlags.eUserDefined):
+        if lProperty.GetFlag(fbx.FbxPropertyFlags.eUserDefined):
             lFbxFCurveNodeName  = lProperty.GetName()
             lCurveNode = lProperty.GetCurveNode(pAnimLayer)
 
@@ -1808,9 +1808,9 @@ def DisplayGenericInfo(pScene):
     for i in range(lRootNode.GetChildCount()):
         DisplayNodeGenericInfo(lRootNode.GetChild(i), 0)
 
-    #Other objects directly connected onto the scene
-    for i in range(pScene.GetSrcObjectCount(fbx.FbxObject.ClassId)):
-        DisplayProperties(pScene.GetSrcObject(fbx.FbxObject.ClassId, i))
+    #Other objects directly connected onto the scene#
+    for i in range(pScene.GetSrcObjectCount(FbxCriteria.ObjectType(fbx.FbxObject.ClassId))):
+        DisplayProperties(pScene.GetSrcObject(FbxCriteria.ObjectType(fbx.FbxObject.ClassId), i))
 
 
 def DisplayNodeGenericInfo(pNode, pDepth):
