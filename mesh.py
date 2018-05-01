@@ -76,10 +76,10 @@ class Tri:
 
 class EditableMesh:
     def __init__(self, name, data = None):
-        self.vertices = []
-        self.colors = []
-        self.uvs = []
-        self.vertmap = {}
+        self.vertices = [] # array of vertices
+        self.colors = [] # array of vertex colors
+        self.uvs = [] # array of texture coordinates
+        self.vertmap = {} # maps a vertex value to a vertex index
         self.edges = []
         self.edgemap = {}
         self.faces = []
@@ -88,6 +88,7 @@ class EditableMesh:
             self.addPolyFaces(data)
 
     def addVertex(self, v, uv = None, color = None):
+        """ Add a vertex to the vertex list """
         if (v in self.vertmap):
             return self.vertmap[v]
         self.vertices = self.vertices + [ v ]
@@ -97,6 +98,7 @@ class EditableMesh:
         return len(self.vertices) - 1
 
     def addEdge(self, e):
+        """ Add an edge to the edge list """
         assert(e.v0 < len(self.vertices))
         assert(e.v1 < len(self.vertices))
         assert(e.v0 >= 0)
@@ -108,10 +110,12 @@ class EditableMesh:
         return len(self.edges) - 1
 
     def addTri(self, ei0, ei1, ei2):
+        """ Given three edges, form a triangle """
         self.faces = self.faces + [ Tri(self, ei0, ei1, ei2) ]
         return len(self.faces) - 1
 
     def addTriVerts(self, vi0, vi1, vi2):
+        """ Given three vertex indices, form a triangle """
         assert(vi0 < len(self.vertices))
         assert(vi1 < len(self.vertices))
         assert(vi2 < len(self.vertices))
@@ -124,6 +128,7 @@ class EditableMesh:
         self.addTri(ei0, ei1, ei2)
 
     def addTriFace(self, t):
+        """ Add a fully formed face """
         assert(t.v0 < len(self.vertices))
         assert(t.v1 < len(self.vertices))
         assert(t.v2 < len(self.vertices))
