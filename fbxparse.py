@@ -6,32 +6,31 @@ import mesh
 import geomgen
 import fbx
 import mesh
-sys.path = sys.path + [os.curdir + os.sep + "fbx2018_1"]    
-from FbxCommon import *
 
 def create_sdk_manager():
-    result = FbxManager.Create()
+    result = fbx.FbxManager.Create()
     return result
 
 def create_scene(manager, name = "FbxScene"):
-    ios = FbxIOSettings.Create(manager, IOSROOT)
+    ios = fbx.FbxIOSettings.Create(manager, fbx.IOSROOT)
     manager.SetIOSettings(ios)
-    scene = FbxScene.Create(manager, name)
+    scene = fbx.FbxScene.Create(manager, name)
     return scene
 
 def load_scene(manager, scene, file_name):
-    importer = FbxImporter.Create(manager, "")    
+    importer = fbx.FbxImporter.Create(manager, "")    
     result = importer.Initialize(file_name, -1, manager.GetIOSettings())
     if not result:
         return False    
     if importer.IsFBX():
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_MATERIAL, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_TEXTURE, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_EMBEDDED, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_SHAPE, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_GOBO, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_ANIMATION, True)
-        manager.GetIOSettings().SetBoolProp(EXP_FBX_GLOBAL_SETTINGS, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_SHAPE, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
+        
     result = importer.Import(scene)
     importer.Destroy()
     return result
@@ -49,5 +48,9 @@ if __name__ == "__main__":
     sdk_manager = create_sdk_manager()
     scene = create_scene(sdk_manager, "Generic")
     load_scene(sdk_manager, scene, "GenericMan.fbx" )
+    axis_system = fbx.FbxAxisSystem(fbx.FbxAxisSystem.eOpenGL)
+    axis_system.ConvertScene(scene)
     root_node = scene.GetRootNode()
+    scene_units = fbx.FbxSystemUnit.cm 
+    scene_units.ConvertScene(scene)
     walk_nodes(scene)
