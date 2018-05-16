@@ -22,6 +22,7 @@ def load_scene(manager, scene, file_name):
     result = importer.Initialize(file_name, -1, manager.GetIOSettings())
     if not result:
         return False    
+
     if importer.IsFBX():
         manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
         manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
@@ -30,7 +31,6 @@ def load_scene(manager, scene, file_name):
         manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
         manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
         manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
-        return 
         
     result = importer.Import(scene)
     importer.Destroy()
@@ -38,10 +38,10 @@ def load_scene(manager, scene, file_name):
 
 # Node methods
 def get_geometry_transform(node):
-    gt = node.GetGeometricTranslation(FbxNode.eSourcePivot)
-    gr = node.GetGeometricRotation(FbxNode.eSourcePivot)
-    gs = node.GetGeometricScaling(FbxNode.eSourcePivot)
-    return FbxAMatrix(gt, gr, gs)
+    gt = node.GetGeometricTranslation(fbx.FbxNode.eSourcePivot)
+    gr = node.GetGeometricRotation(fbx.FbxNode.eSourcePivot)
+    gs = node.GetGeometricScaling(fbx.FbxNode.eSourcePivot)
+    return fbx.FbxAMatrix(gt, gr, gs)
 
 def get_global_transform(node, time = 0.0):
     t = fbx.FbxTime(time)
@@ -92,10 +92,11 @@ def walk_nodes(scene):
     walk_nodes_aux(root)
 
 if __name__ == "__main__":
+    print "Hello world"
     sdk_manager = create_sdk_manager()
     scene = create_scene(sdk_manager, "Generic")
-    load_scene(sdk_manager, scene, "GenericMan.fbx" )
-    axis_system = fbx.FbxAxisSystem(fbx.FbxAxisSystem.eDirectX)
+    print load_scene(sdk_manager, scene, "GenericMan.fbx" )
+    axis_system = fbx.FbxAxisSystem(fbx.FbxAxisSystem.eOpenGL)    
     axis_system.ConvertScene(scene)
     root_node = scene.GetRootNode()
     scene_units = fbx.FbxSystemUnit.cm 
