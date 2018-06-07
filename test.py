@@ -1,4 +1,3 @@
-
 import pyglet
 
 # Create a context matching the above configuration.  Will fail if

@@ -9,11 +9,40 @@ import pyglet
 import camera
 import sphere
 import util
+import fbx
 from euclid import *
 from simplui import *
 
 from shadersystem import ShaderSystem
 
+def create_sdk_manager():
+    result = fbx.FbxManager.Create()
+    return result
+
+def create_scene(manager, name = "FbxScene"):
+    ios = fbx.FbxIOSettings.Create(manager, fbx.IOSROOT)
+    manager.SetIOSettings(ios)
+    scene = fbx.FbxScene.Create(manager, name)
+    return scene
+
+def load_scene(manager, scene, file_name):
+    importer = fbx.FbxImporter.Create(manager, "")    
+    result = importer.Initialize(file_name, -1, manager.GetIOSettings())
+    if not result:
+        return False    
+
+    if importer.IsFBX():
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_MATERIAL, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_TEXTURE, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_EMBEDDED, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_SHAPE, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GOBO, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_ANIMATION, True)
+        manager.GetIOSettings().SetBoolProp(fbx.EXP_FBX_GLOBAL_SETTINGS, True)
+        
+    result = importer.Import(scene)
+    importer.Destroy()
+    return result
 
 
 proj_matrix = Matrix4()
@@ -26,8 +55,8 @@ window_height = 600
 
 # create the window, but keep it offscreen until we are done with setup
 window = pyglet.window.Window(window_width, window_height,
-                              vsync=False,
-                              caption="GLSL Test")
+                            vsync=False,
+                            caption="GLSL Test")
 
 
 @window.event
@@ -149,36 +178,25 @@ def setup():
     mainShader.unbind()
     gradientShader = shaderSystem.createShader("gradient")
 
-# schedule an empty update function, at 60 frames/second
-pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
 
-# schedule a gui update every half second
-pyglet.clock.schedule_interval(update_gui, 0.5)
+if __name__ == "__main__":
+    # schedule an empty update function, at 60 frames/second
+    pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
 
-# make the window visible
-window.set_visible(True)
+    # schedule a gui update every half second
+    pyglet.clock.schedule_interval(update_gui, 0.5)
 
-# setup shaders etc
-setup()
-setup_gui()
+    # make the window visible
+    window.set_visible(True)
 
-window.push_handlers(frame)
-window.push_handlers(on_key_press)
+    # setup shaders etc
+    setup()
+    setup_gui()
 
+    window.push_handlers(frame)
+    window.push_handlers(on_key_press)
 
-sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
-import FbxCommon
-try:
-    from fbx import *
-    # Prepare the FBX SDK.
-    (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()
-    try:
-        print "Ipython import"
-        from IPython.lib.inputhook import enable_gui
-        enable_gui('pyglet')
-    except ImportError:
-         print "Ipython import failed"
+    sdk_manager = create_sdk_manager()
+    scene = create_scene(sdk_manager, "PygletScene")
     pyglet.app.run()
-    lSdkManager.Destroy()
-except ImportError:
-    print 'You need to copy the content in compatible subfolder under ./fbx20151 into your pyglsl install folder.'
+    sdk_manager.Destroy()
