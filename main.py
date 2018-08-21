@@ -76,9 +76,18 @@ def on_resize(width, height):
     return pyglet.event.EVENT_HANDLED
 
 
+# @window.event
+# def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
+#     global cam
+#     angle = float(dx) * math.pi / 180.0
+#     cam.angular_velocity[camera.Y_AXIS] = angle
+#     cam.rotate(angle, camera.Y_AXIS)
+#     return pyglet.event.EVENT_HANDLED
+    
 def update(dt):
-    pass
-
+    global cam
+    cam.update(dt)
+    return
 
 def update_gui(dt):
     if dialogue.parent is not None:
@@ -90,7 +99,7 @@ def update_gui(dt):
         element. text = '%.1f fps' % (fps)
         element = frame.get_element_by_name('pos_label')
         element.text = '%6.2f,%6.2f,%6.2f pos' % (pos.x, pos.y, pos.z)
-
+    return
 
 @window.event
 def on_draw():
@@ -120,6 +129,7 @@ def on_draw():
     pyglet.gl.glDisable(pyglet.gl.GL_DEPTH_TEST)
     pyglet.gl.glDisable(pyglet.gl.GL_CULL_FACE)
     frame.draw()
+    return pyglet.event.EVENT_HANDLED
 
 
 @window.event
@@ -131,20 +141,28 @@ def on_key_press(symbol, modifiers):
         else:
             frame.add(dialogue)
     if symbol == pyglet.window.key.W:
-        cam.move(0.01, camera.Z_AXIS)
+        cam.velocity[camera.Z_AXIS] = 0.3
     if symbol == pyglet.window.key.S:
-        cam.move(-0.01, camera.Z_AXIS)
+        cam.velocity[camera.Z_AXIS] = -0.3
     if symbol == pyglet.window.key.D:
-        cam.move(0.01, camera.X_AXIS)
+        cam.velocity[camera.X_AXIS] = 0.3
     if symbol == pyglet.window.key.A:
-        cam.move(-0.01, camera.X_AXIS)
-    pass
+        cam.velocity[camera.X_AXIS] = -0.3
+    return pyglet.event.EVENT_HANDLED
 
 
 @window.event
 def on_key_release(symbol, modifiers):
     global cam
-    pass
+    if symbol == pyglet.window.key.W:
+        cam.velocity[camera.X_AXIS] = 0.0
+    if symbol == pyglet.window.key.S:
+        cam.velocity[camera.Z_AXIS] = 0.0
+    if symbol == pyglet.window.key.D:
+        cam.velocity[camera.X_AXIS] = 0.0
+    if symbol == pyglet.window.key.A:
+        cam.velocity[camera.X_AXIS] = 0.0
+    return pyglet.event.EVENT_HANDLED
 
 
 def setup_gui():
@@ -180,11 +198,12 @@ def setup():
 
 
 if __name__ == "__main__":
-    # schedule an empty update function, at 60 frames/second
-    pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
+    # schedule an           update function, at 60 frames/second
+    pyglet.clock.schedule_interval(update, 1.0/60.0)
 
     # schedule a gui update every half second
     pyglet.clock.schedule_interval(update_gui, 0.5)
+
 
     # make the window visible
     window.set_visible(True)
