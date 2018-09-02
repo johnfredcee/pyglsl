@@ -5,10 +5,10 @@
 
 import os
 import sys
-import pyglet
 import camera
 import sphere
 import util
+import pyglet
 from euclid import *
 from simplui import *
 
@@ -48,9 +48,10 @@ def on_resize(width, height):
 
 
 def update(dt):
-    pass
-
-
+    global cam
+    cam.update(dt)
+    return
+    
 def update_gui(dt):
     if dialogue.parent is not None:
         global cam
@@ -102,21 +103,45 @@ def on_key_press(symbol, modifiers):
         else:
             frame.add(dialogue)
     if symbol == pyglet.window.key.W:
-        cam.move(0.01, camera.Z_AXIS)
+        cam.velocity[camera.Z_AXIS] = 0.3
     if symbol == pyglet.window.key.S:
-        cam.move(-0.01, camera.Z_AXIS)
+        cam.velocity[camera.Z_AXIS] = -0.3
     if symbol == pyglet.window.key.D:
-        cam.move(0.01, camera.X_AXIS)
+        cam.velocity[camera.X_AXIS] = 0.3
     if symbol == pyglet.window.key.A:
-        cam.move(-0.01, camera.X_AXIS)
-    pass
+        cam.velocity[camera.X_AXIS] = -0.3
+    return pyglet.event.EVENT_HANDLED
 
 
 @window.event
 def on_key_release(symbol, modifiers):
     global cam
-    pass
+    if symbol == pyglet.window.key.W:
+        cam.velocity[camera.X_AXIS] = 0.0
+    if symbol == pyglet.window.key.S:
+        cam.velocity[camera.Z_AXIS] = 0.0
+    if symbol == pyglet.window.key.D:
+        cam.velocity[camera.X_AXIS] = 0.0
+    if symbol == pyglet.window.key.A:
+        cam.velocity[camera.X_AXIS] = 0.0
+    return pyglet.event.EVENT_HANDLED
 
+
+@window.event
+def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
+    global cam
+    cam.yaw += dx;
+    cam.pitch += dy
+    if cam.pitch > 89.0:
+        cam.pitch =  89.0
+    if cam.pitch < -89.0:
+        cam.pitch = -89.0
+    return pyglet.event.EVENT_HANDLED
+
+#     angle = float(dx) * math.pi / 180.0
+#     cam.angular_velocity[camera.Y_AXIS] = angle
+#     cam.rotate(angle, camera.Y_AXIS)
+#     return pyglet.event.EVENT_HANDLED
 
 def setup_gui():
     global frame, dialogue
@@ -150,7 +175,7 @@ def setup():
     gradientShader = shaderSystem.createShader("gradient")
 
 # schedule an empty update function, at 60 frames/second
-pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
+pyglet.clock.schedule_interval(update, 1.0/60.0)
 
 # schedule a gui update every half second
 pyglet.clock.schedule_interval(update_gui, 0.5)
@@ -166,7 +191,7 @@ window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
 
-sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
+sys.path = sys.path + [os.curdir + os.sep + "fbx2018_1"]
 import FbxCommon
 try:
     from fbx import *
