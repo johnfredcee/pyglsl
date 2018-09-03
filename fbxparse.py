@@ -6,6 +6,7 @@ import mesh
 import geomgen
 import fbx
 import mesh
+import flatbuffers
 
 def create_sdk_manager():
     result = fbx.FbxManager.Create()
