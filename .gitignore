@@ -3,4 +3,5 @@
 aqua_viewer
 examples
 .vscode
-.ipynb_checkpoints
+*-checkpoint.ipynb
+
