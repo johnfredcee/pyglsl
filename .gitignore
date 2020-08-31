@@ -1,7 +1,2 @@
-# Compiled python
+__pycache__
 *.pyc
-aqua_viewer
-examples
-.vscode
-*-checkpoint.ipynb
-

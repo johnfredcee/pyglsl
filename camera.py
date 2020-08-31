@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import math
 from euclid import Vector3
 from euclid import Matrix4
@@ -82,8 +82,8 @@ class Camera:
 if __name__ == "__main__":
     cam = Camera(position=Vector3(0.0, 0.0, -10.0))
     cam.pitch = 90
-    print cam.view_matrix
-    print cam.cam_matrix
+    print(cam.view_matrix)
+    print(cam.cam_matrix)
     cam.calc_view()
-    print cam.view_matrix
-    print cam.cam_matrix
+    print(cam.view_matrix)
+    print(cam.cam_matrix)

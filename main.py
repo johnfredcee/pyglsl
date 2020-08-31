@@ -3,8 +3,13 @@
 # (see http://www.boost.org/LICENSE_1_0.txt)
 #
 
-import os
+
 import sys
+import os
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]   
+sys.path = sys.path + [os.curdir + os.sep + "pyeuclid"]
+sys.path = sys.path + [os.curdir + os.sep + "simplui"]
+
 import camera
 import sphere
 import util
@@ -74,12 +79,12 @@ def on_draw():
     mainShader = shaderSystem["main"]
     gradientShader = shaderSystem["gradient"]
     mainShader.bind()
-    mainShader.uniform_matrixf("projMatrix", proj_matrix)
+    mainShader.uniform_matrixf(b"projMatrix", proj_matrix)
     cam.apply(mainShader)
-    mainShader.uniform_matrixf("texMatrix",  tex_matrix)
+    mainShader.uniform_matrixf(b"texMatrix",  tex_matrix)
     pyglet.gl.glActiveTexture(pyglet.gl.GL_TEXTURE0)
     pyglet.gl.glBindTexture(grid_texture.target, grid_texture.id)
-    mainShader.uniformi('tex0', 0)
+    mainShader.uniformi(b'tex0', 0)
     planet.draw(mainShader)
     pyglet.gl.glBindTexture(grid_texture.target, 0)
     mainShader.unbind()
@@ -191,19 +196,19 @@ window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
 
-sys.path = sys.path + [os.curdir + os.sep + "fbx2018_1"]
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]
 import FbxCommon
 try:
     from fbx import *
     # Prepare the FBX SDK.
     (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()
     try:
-        print "Ipython import"
+        print("Ipython import")
         from IPython.lib.inputhook import enable_gui
         enable_gui('pyglet')
     except ImportError:
-         print "Ipython import failed"
+         print("Ipython import failed")
     pyglet.app.run()
     lSdkManager.Destroy()
 except ImportError:
-    print 'You need to copy the content in compatible subfolder under ./fbx20151 into your pyglsl install folder.'
+    print("You need to build the python bindings for fbx 2020.1")

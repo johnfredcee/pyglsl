@@ -25,23 +25,23 @@ class ShaderSystem:
         ShaderSystem.vertShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/vert") }
         ShaderSystem.fragShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/frag") }
         ShaderSystem.geomShaders = { shaderName(shfile) : shfile for shfile in listShaders(r"glsl/geom") }
-        print "Shaders available ", ShaderSystem.vertShaders.keys()
+        print("Shaders available ", ShaderSystem.vertShaders.keys())
 
     def getShaderFileContents(self, name):
         vertFile = None
-        if ShaderSystem.vertShaders.has_key(name):
+        if name in ShaderSystem.vertShaders:
             vertFile = ShaderSystem.vertShaders[name]
             f = open(vertFile)
             vertFile = f.readlines()
             f.close()
         fragFile = None
-        if ShaderSystem.fragShaders.has_key(name):
+        if name in ShaderSystem.fragShaders:
             fragFile = ShaderSystem.fragShaders[name]
             f = open(fragFile)
             fragFile = f.readlines()
             f.close()
         geomFile = None
-        if ShaderSystem.geomShaders.has_key(name):
+        if name in ShaderSystem.geomShaders:
             geomFile = ShaderSystem.geomShaders[name]
             f = open(geomFile)
             geomFile = f.readlines()
@@ -51,7 +51,7 @@ class ShaderSystem:
 
     def createShader(self, name):
         shaderTexts = self.getShaderFileContents(name)
-        print "Creating shader " + name
+        print("Creating shader " + name)
         ShaderSystem.shaders[name] = Shader(vert = shaderTexts[0], frag = shaderTexts[1], geom=shaderTexts[2])
         return ShaderSystem.shaders[name]
 
@@ -59,5 +59,5 @@ class ShaderSystem:
         if (name in self.shaders):
             return self.shaders[name]
         else:
-            raise KeyError, name  # <<< DON'T FORGET THIS LINE !!
+            raise KeyError(name)  # <<< DON'T FORGET THIS LINE !!
 
