@@ -25,6 +25,8 @@ Useful scripts:
 
 *fbx_parse.py* - parses the node hierarchy of an fbx file
 
+*geomgen.py* - generate various shapes procedurally
+
 *main.py* - pyglet renderer
 
 *ExploreFbx.ipynp* Notebook documenenting working with the fbx sdk api
