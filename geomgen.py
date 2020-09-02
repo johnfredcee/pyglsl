@@ -144,8 +144,8 @@ def granny(u, v):
 # top level functions
 def make_sphere(slices = 32, stacks = 32):
     verts, faces = surface(slices, stacks, sphere)
-    print verts
-    print faces
+    print(verts)
+    print(faces)
     return { "vertices" : verts, "faces" : faces }
 
 def make_klein(slices = 32, stacks = 32):

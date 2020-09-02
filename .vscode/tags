@@ -1,0 +1,456 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Camera	../camera.py	/^class Camera:$/;"	kind:class	line:12
+Color	../mesh.py	/^class Color:$/;"	kind:class	line:3
+Domain	../glfw.py	/^class Domain(object):$/;"	kind:class	line:48
+EDGES	../editmesh.py	/^    EDGES = 2$/;"	kind:variable	line:8
+Edge	../mesh.py	/^class Edge:$/;"	kind:class	line:43
+EditMesh	../editmesh.py	/^class EditMesh(object):$/;"	kind:class	line:6
+EditableMesh	../mesh.py	/^class EditableMesh:$/;"	kind:class	line:77
+FbxCommon	../main.py	/^import FbxCommon$/;"	kind:namespace	line:170
+FbxCommon.py	../fbx20151\FbxCommon.py	1;"	kind:file	line:1
+FromOBJ_FileName	../trimesh.py	/^    FromOBJ_FileName = staticmethod( FromOBJ_FileName )$/;"	kind:variable	line:823
+FromOBJ_FileName	../trimesh.py	/^    def FromOBJ_FileName( obj_fname ):$/;"	kind:member	line:815
+FromOBJ_Lines	../trimesh.py	/^    FromOBJ_Lines = staticmethod( FromOBJ_Lines )$/;"	kind:variable	line:872
+FromOBJ_Lines	../trimesh.py	/^    def FromOBJ_Lines( obj_lines ):$/;"	kind:member	line:826
+FromTriMeshes	../trimesh.py	/^    FromTriMeshes = staticmethod( FromTriMeshes )$/;"	kind:variable	line:812
+FromTriMeshes	../trimesh.py	/^    def FromTriMeshes( meshes ):$/;"	kind:member	line:796
+HalfEdge	../trimesh.py	/^    class HalfEdge( object ):$/;"	kind:class	line:272
+HalfEdge	../trimesh.py	/^HalfEdge = TriMesh.HalfEdge$/;"	kind:variable	line:959
+InitializeSdkObjects	../fbx20151\FbxCommon.py	/^def InitializeSdkObjects():$/;"	kind:function	line:4
+LoadScene	../fbx20151\FbxCommon.py	/^def LoadScene(pSdkManager, pScene, pFileName):$/;"	kind:function	line:50
+Matrix3	../camera.py	/^from euclid import Matrix3$/;"	kind:namespace	line:4
+Matrix4	../camera.py	/^from euclid import Matrix4$/;"	kind:namespace	line:3
+Node	../nodes.py	/^class Node(simplui.Dialogue):$/;"	kind:class	line:5
+QUADS	../editmesh.py	/^    QUADS = 3$/;"	kind:variable	line:9
+Quaternion	../camera.py	/^from euclid import Quaternion$/;"	kind:namespace	line:5
+Render	../glfw.py	/^class Render(object):$/;"	kind:class	line:9
+SaveScene	../fbx20151\FbxCommon.py	/^def SaveScene(pSdkManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):$/;"	kind:function	line:20
+Shader	../life.py	/^from shader import Shader$/;"	kind:namespace	line:10
+Shader	../shaders.py	/^class Shader:$/;"	kind:class	line:11
+Shader	../shadersystem.py	/^from shaders import Shader$/;"	kind:namespace	line:3
+ShaderSystem	../main.py	/^from shadersystem import ShaderSystem$/;"	kind:namespace	line:15
+ShaderSystem	../nodegui.py	/^from shadersystem import ShaderSystem$/;"	kind:namespace	line:15
+ShaderSystem	../shadersystem.py	/^class ShaderSystem:$/;"	kind:class	line:6
+Sphere	../sphere.py	/^class Sphere(object):$/;"	kind:class	line:9
+Tri	../mesh.py	/^class Tri:$/;"	kind:class	line:58
+TriMesh	../trimesh.py	/^class TriMesh( object ):$/;"	kind:class	line:14
+UV	../mesh.py	/^class UV:$/;"	kind:class	line:16
+VERTICES	../editmesh.py	/^    VERTICES = 1$/;"	kind:variable	line:7
+Vector3	../camera.py	/^from euclid import Vector3$/;"	kind:namespace	line:2
+Vertex	../mesh.py	/^class Vertex:$/;"	kind:class	line:26
+X_AXIS	../camera.py	/^X_AXIS = 0$/;"	kind:variable	line:8
+Y_AXIS	../camera.py	/^Y_AXIS = 1$/;"	kind:variable	line:9
+Z_AXIS	../camera.py	/^Z_AXIS = 2$/;"	kind:variable	line:10
+__add__	../geom.py	/^    def __add__(self, other):$/;"	kind:member	line:43
+__add__	../geom.py	/^    def __add__(self, other):$/;"	kind:member	line:99
+__call__	../glfw.py	/^    def __call__(self, *args):$/;"	kind:member	line:15
+__contains__	../geom.py	/^    def __contains__(self,item):$/;"	kind:member	line:27
+__contains__	../geom.py	/^    def __contains__(self,item):$/;"	kind:member	line:83
+__deepcopy__	../trimesh.py	/^    def __deepcopy__( self, memodict ):$/;"	kind:member	line:37
+__div__	../geom.py	/^    def __div__(self, other):$/;"	kind:member	line:107
+__div__	../geom.py	/^    def __div__(self, other):$/;"	kind:member	line:51
+__eq__	../geom.py	/^    def __eq__(self,other):$/;"	kind:member	line:10
+__eq__	../geom.py	/^    def __eq__(self,other):$/;"	kind:member	line:66
+__eq__	../mesh.py	/^    def __eq__(self, other):$/;"	kind:member	line:36
+__getattr__	../geom.py	/^    def __getattr__(self, name):$/;"	kind:member	line:30
+__getattr__	../geom.py	/^    def __getattr__(self, name):$/;"	kind:member	line:86
+__getitem__	../geom.py	/^    def __getitem__(self,key):$/;"	kind:member	line:22
+__getitem__	../geom.py	/^    def __getitem__(self,key):$/;"	kind:member	line:78
+__getitem__	../mesh.py	/^    def __getitem__(self, key):$/;"	kind:member	line:13
+__getitem__	../mesh.py	/^    def __getitem__(self, key):$/;"	kind:member	line:23
+__getitem__	../mesh.py	/^    def __getitem__(self, key):$/;"	kind:member	line:52
+__getitem__	../mesh.py	/^    def __getitem__(self, key):$/;"	kind:member	line:68
+__getitem__	../shadersystem.py	/^    def __getitem__(self, name):$/;"	kind:member	line:58
+__hash__	../geom.py	/^    def __hash__(self):$/;"	kind:member	line:16
+__hash__	../geom.py	/^    def __hash__(self):$/;"	kind:member	line:72
+__hash__	../mesh.py	/^    def __hash__(self):$/;"	kind:member	line:33
+__init__	../camera.py	/^    def __init__(self, position=Vector3(0.0, 0.0, 0.0),$/;"	kind:member	line:24
+__init__	../editmesh.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	../geom.py	/^    def __init__(self, x, y):$/;"	kind:member	line:6
+__init__	../geom.py	/^    def __init__(self, x, y, z):$/;"	kind:member	line:62
+__init__	../glfw.py	/^    def __init__(self):$/;"	kind:member	line:49
+__init__	../glfw.py	/^    def __init__(self, viewport):$/;"	kind:member	line:10
+__init__	../mesh.py	/^    def __init__(self, mesh, ei0, ei1, ei2):$/;"	kind:member	line:59
+__init__	../mesh.py	/^    def __init__(self, mesh, vi0, vi1):$/;"	kind:member	line:44
+__init__	../mesh.py	/^    def __init__(self, name, data = None):$/;"	kind:member	line:78
+__init__	../mesh.py	/^    def __init__(self, r, g, b, a = 0.):$/;"	kind:member	line:4
+__init__	../mesh.py	/^    def __init__(self, u, v):$/;"	kind:member	line:17
+__init__	../mesh.py	/^    def __init__(self, x, y, z):$/;"	kind:member	line:27
+__init__	../nodes.py	/^    def __init__(self, title, func, ins, outs, **kwargs):$/;"	kind:member	line:7
+__init__	../shaders.py	/^    def __init__(self, vert = [], frag = [], geom = []):$/;"	kind:member	line:14
+__init__	../shadersystem.py	/^    def __init__(self, shaderdir=os.getcwd()):$/;"	kind:member	line:12
+__init__	../sphere.py	/^    def __init__(self, radius=1.0, numRings=16, numSegments=16):$/;"	kind:member	line:10
+__init__	../trimesh.py	/^        def __init__( self ):$/;"	kind:member	line:273
+__init__	../trimesh.py	/^    def __init__( self ):$/;"	kind:member	line:15
+__len__	../geom.py	/^    def __len__(self):$/;"	kind:member	line:19
+__len__	../geom.py	/^    def __len__(self):$/;"	kind:member	line:75
+__len__	../mesh.py	/^    def __len__():$/;"	kind:member	line:10
+__len__	../mesh.py	/^    def __len__(self):$/;"	kind:member	line:21
+__len__	../mesh.py	/^    def __len__(self):$/;"	kind:member	line:49
+__len__	../mesh.py	/^    def __len__(self):$/;"	kind:member	line:65
+__mul__	../geom.py	/^    def __mul__(self, other):$/;"	kind:member	line:103
+__mul__	../geom.py	/^    def __mul__(self, other):$/;"	kind:member	line:47
+__ne__	../mesh.py	/^    def __ne__(self, other):$/;"	kind:member	line:39
+__repr__	../geom.py	/^    def __repr__(self):$/;"	kind:member	line:111
+__repr__	../geom.py	/^    def __repr__(self):$/;"	kind:member	line:55
+__setattr__	../geom.py	/^    def __setattr__(self, name, val):$/;"	kind:member	line:33
+__setattr__	../geom.py	/^    def __setattr__(self, name, val):$/;"	kind:member	line:89
+__str__	../geom.py	/^    def __str__(self):$/;"	kind:member	line:13
+__str__	../geom.py	/^    def __str__(self):$/;"	kind:member	line:69
+__sub__	../geom.py	/^    def __sub__(self, other):$/;"	kind:member	line:39
+__sub__	../geom.py	/^    def __sub__(self, other):$/;"	kind:member	line:95
+across	../camera.py	/^    across = 1$/;"	kind:variable	line:14
+across	../camera.py	/^    def across(self):$/;"	kind:member	line:50
+addEdge	../mesh.py	/^    def addEdge(self, e):$/;"	kind:member	line:99
+addMaterial	../fbxutils.py	/^def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):$/;"	kind:function	line:141
+addNode	../fbxutils.py	/^def addNode( pScene, nodeName, **kwargs ):$/;"	kind:function	line:130
+addPolyFaces	../mesh.py	/^    def addPolyFaces(self, p):$/;"	kind:member	line:187
+addPolyVerts	../mesh.py	/^    def addPolyVerts(self, faces):$/;"	kind:member	line:168
+addQuad	../mesh.py	/^    def addQuad(self, ei0, ei1, ei2, ei3):$/;"	kind:member	line:139
+addQuadFace	../mesh.py	/^    def addQuadFace(self, t):$/;"	kind:member	line:151
+addQuadVerts	../mesh.py	/^    def addQuadVerts(self, vi0, vi1, vi2, vi3):$/;"	kind:member	line:144
+addTri	../mesh.py	/^    def addTri(self, ei0, ei1, ei2):$/;"	kind:member	line:110
+addTriFace	../mesh.py	/^    def addTriFace(self, t):$/;"	kind:member	line:126
+addTriVerts	../mesh.py	/^    def addTriVerts(self, vi0, vi1, vi2):$/;"	kind:member	line:114
+addVertex	../mesh.py	/^    def addVertex(self, v, uv = None, color = None):$/;"	kind:member	line:90
+add_edge	../editmesh.py	/^    def add_edge(self, v0, v1):$/;"	kind:member	line:32
+add_quad	../editmesh.py	/^    def add_quad(self, e0, e1, e2, e3):$/;"	kind:member	line:43
+add_vertex	../editmesh.py	/^    def add_vertex(self, point):$/;"	kind:member	line:22
+angle_turn_2d	../geom.py	/^def angle_turn_2d( p1, p2, p3 ):$/;"	kind:function	line:273
+append	../trimesh.py	/^    def append( self, mesh ):$/;"	kind:member	line:747
+apply	../camera.py	/^    def apply(self, shader):$/;"	kind:member	line:75
+asarrayf	../trimesh.py	/^def asarrayf( *args, **kwargs ):$/;"	kind:function	line:7
+atan4	../geom.py	/^def atan4( y, x):$/;"	kind:function	line:249
+attribute	../shaders.py	/^    def attribute(self, name):$/;"	kind:member	line:186
+axes	../camera.py	/^    axes = [Vector3(1.0, 0.0, 0.0),$/;"	kind:variable	line:20
+axis	../camera.py	/^    def axis(self, axis):$/;"	kind:member	line:53
+batch	../life.py	/^batch = pyglet.graphics.Batch()$/;"	kind:variable	line:77
+bind	../shaders.py	/^    def bind(self):$/;"	kind:member	line:143
+boundary_edges	../trimesh.py	/^    def boundary_edges( self ):$/;"	kind:member	line:524
+boundary_vertices	../trimesh.py	/^    def boundary_vertices( self ):$/;"	kind:member	line:506
+calc_movement	../glfw.py	/^    def calc_movement(jst, n_axis, keyneg, keypos):$/;"	kind:function	line:101
+calc_view	../camera.py	/^    def calc_view(self):$/;"	kind:member	line:38
+camera	../main.py	/^import camera$/;"	kind:namespace	line:9
+camera	../nodegui.py	/^import camera$/;"	kind:namespace	line:9
+camera.py	../camera.py	1;"	kind:file	line:1
+caption	../main.py	/^                              caption="GLSL Test")$/;"	kind:variable	line:30
+caption	../nodegui.py	/^                              caption="GLSL Test")$/;"	kind:variable	line:28
+catmull_rom	../geom.py	/^def catmull_rom( p0, p1, p2, p3, t ):$/;"	kind:function	line:286
+cffi	../shaders.py	/^import ctypes as cffi$/;"	kind:namespace	line:9
+circle	../rules_surface.py	/^    circle = []$/;"	kind:variable	line:68
+circle	../shapegen.py	/^    circle = []$/;"	kind:variable	line:25
+color_walk	../mesh.py	/^def color_walk(mesh):$/;"	kind:function	line:224
+copy	../trimesh.py	/^        import copy$/;"	kind:namespace	line:34
+copy	../trimesh.py	/^    def copy( self ):$/;"	kind:member	line:33
+copyFramebuffer	../life.py	/^def copyFramebuffer(tex, *size):$/;"	kind:function	line:82
+createShader	../shaders.py	/^    def createShader(self, strings, type):$/;"	kind:member	line:31
+createShader	../shadersystem.py	/^    def createShader(self, name):$/;"	kind:member	line:52
+dialogue	../main.py	/^dialogue = None$/;"	kind:variable	line:23
+dialogue	../nodegui.py	/^dialogue = None$/;"	kind:variable	line:21
+directed_edge2face_index	../trimesh.py	/^        def directed_edge2face_index( edge ):$/;"	kind:function	line:300
+directed_edge2he_index	../trimesh.py	/^    def directed_edge2he_index( self, edge ):$/;"	kind:member	line:418
+draw	../editmesh.py	/^    def draw(self, shader):$/;"	kind:member	line:19
+draw	../glfw.py	/^        def draw():$/;"	kind:function	line:23
+draw	../glfw.py	/^        def draw():$/;"	kind:function	line:35
+draw	../sphere.py	/^    def draw(self, shader):$/;"	kind:member	line:55
+edges	../trimesh.py	/^    edges = property( get_edges )$/;"	kind:variable	line:269
+editmesh.py	../editmesh.py	1;"	kind:file	line:1
+enable_gui	../main.py	/^        from IPython.lib.inputhook import enable_gui$/;"	kind:namespace	line:177
+enable_gui	../nodegui.py	/^    from IPython.lib.inputhook import enable_gui$/;"	kind:namespace	line:165
+enumerate_attributes	../shaders.py	/^    def enumerate_attributes(self):$/;"	kind:member	line:91
+enumerate_uniforms	../shaders.py	/^    def enumerate_uniforms(self):$/;"	kind:member	line:113
+etree	../rules_surface.py	/^from lxml import etree$/;"	kind:namespace	line:3
+euclid	../fbxutils.py	/^import euclid$/;"	kind:namespace	line:4
+euclid	../geomgen.py	/^import euclid$/;"	kind:namespace	line:2
+euclid	../mesh.py	/^import euclid$/;"	kind:namespace	line:1
+euclid	../shapegen.py	/^import euclid$/;"	kind:namespace	line:1
+euclid	../track.py	/^import euclid$/;"	kind:namespace	line:2
+euclid	../track_gen.py	/^import euclid$/;"	kind:namespace	line:6
+euclid	../tri_test.py	/^import euclid$/;"	kind:namespace	line:4
+euclid	../util.py	/^import euclid$/;"	kind:namespace	line:2
+evaluate	../nodes.py	/^    def evaluate(self):$/;"	kind:member	line:36
+face_areas	../trimesh.py	/^    face_areas = property( get_face_areas )$/;"	kind:variable	line:141
+face_normals	../trimesh.py	/^    face_normals = property( get_face_normals )$/;"	kind:variable	line:134
+faces	../rules_surface.py	/^    faces = []$/;"	kind:variable	line:72
+faces	../shapegen.py	/^    faces = []$/;"	kind:variable	line:29
+failed	../main.py	/^         print "Ipython import failed"$/;"	kind:namespace	line:180
+failed	../nodegui.py	/^    print "Ipython import failed"$/;"	kind:namespace	line:168
+fbx	../fbxutils.py	/^import fbx$/;"	kind:namespace	line:8
+fbx	../track_gen.py	/^import fbx$/;"	kind:namespace	line:11
+fbx	../tri_test.py	/^        import fbx$/;"	kind:namespace	line:21
+fbx	../tri_test.py	/^        print "Could not import fbx"$/;"	kind:namespace	line:23
+fbxManager	../track_gen.py	/^    fbxManager = fbx.FbxManager.Create()$/;"	kind:variable	line:19
+fbxManager	../track_gen.py	/^fbxManager = None$/;"	kind:variable	line:13
+fbxManager	../tri_test.py	/^fbxManager = None$/;"	kind:variable	line:10
+fbxScene	../track_gen.py	/^    fbxScene = fbx.FbxScene.Create(fbxManager, sceneName)$/;"	kind:variable	line:25
+fbxScene	../track_gen.py	/^fbxScene = None$/;"	kind:variable	line:14
+fbxScene	../tri_test.py	/^fbxScene = None$/;"	kind:variable	line:11
+fbxutils	../track_gen.py	/^import fbxutils$/;"	kind:namespace	line:10
+fbxutils	../tri_test.py	/^import fbxutils$/;"	kind:namespace	line:8
+fbxutils.py	../fbxutils.py	1;"	kind:file	line:1
+forward	../camera.py	/^    def forward(self):$/;"	kind:member	line:47
+forward	../camera.py	/^    forward = 3$/;"	kind:variable	line:16
+fragShaders	../shadersystem.py	/^    fragShaders = None$/;"	kind:variable	line:8
+frame	../main.py	/^frame = None$/;"	kind:variable	line:22
+frame	../nodegui.py	/^frame = None$/;"	kind:variable	line:20
+geom.py	../geom.py	1;"	kind:file	line:1
+geomShaders	../shadersystem.py	/^    geomShaders = None$/;"	kind:variable	line:9
+geomgen	../fbxutils.py	/^import geomgen$/;"	kind:namespace	line:6
+geomgen	../track_gen.py	/^import geomgen$/;"	kind:namespace	line:8
+geomgen	../tri_test.py	/^import geomgen$/;"	kind:namespace	line:6
+geomgen.py	../geomgen.py	1;"	kind:file	line:1
+getShaderFileContents	../shadersystem.py	/^    def getShaderFileContents(self, name):$/;"	kind:member	line:30
+get_dangling_vertices	../trimesh.py	/^    def get_dangling_vertices( self ):$/;"	kind:member	line:570
+get_edges	../trimesh.py	/^    def get_edges( self ):$/;"	kind:member	line:265
+get_face_areas	../trimesh.py	/^    def get_face_areas( self ):$/;"	kind:member	line:137
+get_face_normals	../trimesh.py	/^    def get_face_normals( self ):$/;"	kind:member	line:130
+get_halfedges	../trimesh.py	/^    def get_halfedges( self ):$/;"	kind:member	line:431
+get_vertex_areas	../trimesh.py	/^    def get_vertex_areas( self ):$/;"	kind:member	line:245
+get_vertex_normals	../trimesh.py	/^    def get_vertex_normals( self ):$/;"	kind:member	line:187
+gl	../shaders.py	/^import pyglet.gl $/;"	kind:namespace	line:8
+glfw	../glfw.py	/^import pyglfw.pyglfw as glfw$/;"	kind:namespace	line:3
+glfw.py	../glfw.py	1;"	kind:file	line:1
+granny	../geomgen.py	/^def granny(u, v):$/;"	kind:function	line:140
+granny_path	../geomgen.py	/^def granny_path(t):$/;"	kind:function	line:133
+gzip	../trimesh.py	/^            import gzip$/;"	kind:namespace	line:817
+halfedges	../trimesh.py	/^    halfedges = property( get_halfedges )$/;"	kind:variable	line:441
+has_attribute	../shaders.py	/^    def has_attribute(self, name):$/;"	kind:member	line:189
+has_colors	../mesh.py	/^    def has_colors(self):$/;"	kind:member	line:213
+has_uniform	../shaders.py	/^    def has_uniform(self, name):$/;"	kind:member	line:140
+has_uvs	../mesh.py	/^    def has_uvs(self):$/;"	kind:member	line:215
+he_index2directed_edge	../trimesh.py	/^    def he_index2directed_edge( self, he_index ):$/;"	kind:member	line:408
+input	../nodes.py	/^    def input(self, name):$/;"	kind:member	line:44
+input_pos	../nodes.py	/^    def input_pos(self, name):$/;"	kind:member	line:50
+ios	../track_gen.py	/^    ios = fbx.FbxIOSettings.Create(fbxManager, fbx.IOSROOT)$/;"	kind:variable	line:21
+itertools	../trimesh.py	/^        import itertools$/;"	kind:namespace	line:177
+itertools	../trimesh.py	/^        import itertools$/;"	kind:namespace	line:235
+klein	../geomgen.py	/^def klein(u, v):$/;"	kind:function	line:97
+length	../geom.py	/^    def length(self):$/;"	kind:member	line:114
+length	../geom.py	/^    def length(self):$/;"	kind:member	line:58
+life.py	../life.py	1;"	kind:file	line:1
+line_end_perp2d	../geom.py	/^def line_end_perp2d(p1, p2, w):$/;"	kind:function	line:204
+line_exp2imp_2d	../geom.py	/^def line_exp2imp_2d(point1, point2):$/;"	kind:function	line:158
+line_exp_len_2d	../geom.py	/^def line_exp_len_2d(p1, p2):$/;"	kind:function	line:117
+line_exp_perp_2d	../geom.py	/^def line_exp_perp_2d ( p1, p2, p3 ):$/;"	kind:function	line:183
+line_exp_perp_2d	../geom.py	/^def line_exp_perp_2d(p1, p2, p3):$/;"	kind:function	line:149
+line_interp_perp2d	../geom.py	/^def line_interp_perp2d(p1, p2, w, t):$/;"	kind:function	line:216
+lines_exp_int_2d	../geom.py	/^def lines_exp_int_2d(p1, p2, p3, p4 ):$/;"	kind:function	line:232
+lines_imp_int_2d	../geom.py	/^def lines_imp_int_2d( a1, b1, c1, a2, b2, c2 ):$/;"	kind:function	line:165
+link	../shaders.py	/^    def link(self):$/;"	kind:member	line:66
+listShaders	../shadersystem.py	/^        def listShaders(d):$/;"	kind:function	line:15
+mag	../trimesh.py	/^def mag( vec ):$/;"	kind:function	line:5
+mag2	../trimesh.py	/^def mag2( vec ):$/;"	kind:function	line:3
+main.py	../main.py	1;"	kind:file	line:1
+makeMaterial	../fbxutils.py	/^def makeMaterial(pManager, pScene, materialName, **kwargs ):$/;"	kind:function	line:14
+makeMesh	../fbxutils.py	/^def makeMesh( pScene, pMaterial, mesh, texture = None ):$/;"	kind:function	line:69
+make_klein	../geomgen.py	/^def make_klein(slices = 32, stacks = 32):$/;"	kind:function	line:151
+make_knot	../geomgen.py	/^def make_knot(slices = 32, stacks = 32):$/;"	kind:function	line:155
+make_mesh	../fbxutils.py	/^def make_mesh(pManager, pScene, geomgenfn, name, **kwargs):$/;"	kind:function	line:193
+make_ortho	../util.py	/^def make_ortho(dest, left, right, bottom, top, near, far):$/;"	kind:function	line:4
+make_sphere	../geomgen.py	/^def make_sphere(slices = 32, stacks = 32):$/;"	kind:function	line:145
+make_spline	../track.py	/^def make_spline(p0, p1, p2, p3, roll0, roll1, width, segments):$/;"	kind:function	line:45
+make_track	../track.py	/^def make_track():$/;"	kind:function	line:122
+make_vertex	../track.py	/^def make_vertex(point):$/;"	kind:function	line:119
+make_vertex	../tri_test.py	/^def make_vertex(point):$/;"	kind:function	line:14
+math	../camera.py	/^import math$/;"	kind:namespace	line:1
+math	../editmesh.py	/^import math$/;"	kind:namespace	line:1
+math	../fbxutils.py	/^import math$/;"	kind:namespace	line:3
+math	../geom.py	/^import math$/;"	kind:namespace	line:3
+math	../sphere.py	/^import math$/;"	kind:namespace	line:2
+math	../track.py	/^import math$/;"	kind:namespace	line:3
+math	../track_gen.py	/^import math$/;"	kind:namespace	line:5
+math	../tri_test.py	/^import math$/;"	kind:namespace	line:3
+mesh	../fbxutils.py	/^import mesh$/;"	kind:namespace	line:5
+mesh	../geomgen.py	/^import mesh$/;"	kind:namespace	line:3
+mesh	../sphere.py	/^import mesh$/;"	kind:namespace	line:3
+mesh	../track_gen.py	/^import mesh$/;"	kind:namespace	line:7
+mesh	../tri_test.py	/^import mesh$/;"	kind:namespace	line:5
+mesh.py	../mesh.py	1;"	kind:file	line:1
+meshes	../track_gen.py	/^meshes = []$/;"	kind:variable	line:15
+meshes	../tri_test.py	/^meshes = []$/;"	kind:variable	line:12
+mov	../glfw.py	/^    def mov(self, vel_x, vel_y):$/;"	kind:member	line:60
+move	../camera.py	/^    def move(self, distance, axis=2):$/;"	kind:member	line:64
+nodegui.py	../nodegui.py	1;"	kind:file	line:1
+nodeid	../nodes.py	/^    nodeid = 42$/;"	kind:variable	line:6
+nodes.py	../nodes.py	1;"	kind:file	line:1
+objectify	../rules_surface.py	/^from lxml import objectify$/;"	kind:namespace	line:4
+octohedron	../geomgen.py	/^def octohedron():$/;"	kind:function	line:7
+on_close	../main.py	/^def on_close():$/;"	kind:function	line:34
+on_close	../nodegui.py	/^def on_close():$/;"	kind:function	line:32
+on_draw	../life.py	/^def on_draw():$/;"	kind:function	line:122
+on_draw	../main.py	/^def on_draw():$/;"	kind:function	line:67
+on_draw	../nodegui.py	/^def on_draw():$/;"	kind:function	line:65
+on_key	../glfw.py	/^def on_key(window, key, scancode, action, mods):$/;"	kind:function	line:75
+on_key_press	../main.py	/^def on_key_press(symbol, modifiers):$/;"	kind:function	line:97
+on_key_press	../nodegui.py	/^def on_key_press(symbol, modifiers):$/;"	kind:function	line:94
+on_key_release	../main.py	/^def on_key_release(symbol, modifiers):$/;"	kind:function	line:116
+on_key_release	../nodegui.py	/^def on_key_release(symbol, modifiers):$/;"	kind:function	line:113
+on_resize	../life.py	/^def on_resize(width, height):$/;"	kind:function	line:98
+on_resize	../main.py	/^def on_resize(width, height):$/;"	kind:function	line:39
+on_resize	../nodegui.py	/^def on_resize(width, height):$/;"	kind:function	line:37
+os	../main.py	/^import os$/;"	kind:namespace	line:6
+os	../shadersystem.py	/^import os$/;"	kind:namespace	line:1
+os	../track_gen.py	/^import os$/;"	kind:namespace	line:3
+output	../nodes.py	/^    def output(self, name):$/;"	kind:member	line:47
+output_pos	../nodes.py	/^    def output_pos(self, name):$/;"	kind:member	line:54
+params	../params.py	/^params = { "yawDrag" : 0.95 ,$/;"	kind:variable	line:1
+params.py	../params.py	1;"	kind:file	line:1
+parse_xform	../rules_surface.py	/^def parse_xform(xform_string):$/;"	kind:function	line:110
+parse_xform	../shapegen.py	/^def parse_xform(xform_string):$/;"	kind:function	line:68
+perp	../geomgen.py	/^def perp(u):$/;"	kind:function	line:47
+pick_rule	../rules_surface.py	/^def pick_rule(tree, name):$/;"	kind:function	line:96
+pick_rule	../shapegen.py	/^def pick_rule(rule_names, rules):$/;"	kind:function	line:53
+pitch	../camera.py	/^    pitch = 1$/;"	kind:variable	line:17
+pointOnSphere	../sphere.py	/^        def pointOnSphere(radius, phi, theta):$/;"	kind:function	line:11
+points	../glfw.py	/^    def points(self):$/;"	kind:member	line:57
+polar_to_xy	../geom.py	/^def polar_to_xy ( point ):$/;"	kind:function	line:123
+polar_to_xy	../geom.py	/^def polar_to_xy(polar):$/;"	kind:function	line:291
+pos	../glfw.py	/^    def pos(self):$/;"	kind:member	line:65
+pos	../glfw.py	/^    def pos(self, x_y):$/;"	kind:member	line:69
+position	../camera.py	/^    def position(self):$/;"	kind:member	line:61
+positions_changed	../trimesh.py	/^    def positions_changed( self ):$/;"	kind:member	line:537
+process_rule	../rules_surface.py	/^def process_rule(rule, tree, depth, verts, faces, matrix = Matrix4.new_identity()):$/;"	kind:function	line:170
+process_rule	../shapegen.py	/^def process_rule(rule, rules, depth, verts, faces, matrix = euclid.Matrix4.new_identity()):$/;"	kind:function	line:122
+proj_matrix	../main.py	/^proj_matrix = Matrix4()$/;"	kind:variable	line:19
+proj_matrix	../nodegui.py	/^proj_matrix = Matrix4()$/;"	kind:variable	line:17
+project	../track.py	/^def project(forward, up):$/;"	kind:function	line:5
+pyglet	../editmesh.py	/^import pyglet$/;"	kind:namespace	line:2
+pyglet	../life.py	/^import pyglet$/;"	kind:namespace	line:8
+pyglet	../main.py	/^import pyglet$/;"	kind:namespace	line:8
+pyglet	../nodegui.py	/^import pyglet$/;"	kind:namespace	line:8
+pyglet	../shaders.py	/^import pyglet.gl $/;"	kind:namespace	line:8
+pyglet	../sphere.py	/^import pyglet$/;"	kind:namespace	line:4
+pyglet	../test.py	/^import pyglet$/;"	kind:namespace	line:2
+pyglfw	../glfw.py	/^import pyglfw.pyglfw as glfw$/;"	kind:namespace	line:3
+quad	../glfw.py	/^    def quad(self, center, length=0.1):$/;"	kind:member	line:34
+r8mat_inverse_2d	../geom.py	/^def r8mat_inverse_2d( mat ):$/;"	kind:function	line:137
+random	../rules_surface.py	/^import random$/;"	kind:namespace	line:5
+remove_face_indices	../trimesh.py	/^    def remove_face_indices( self, face_indices_to_remove ):$/;"	kind:member	line:700
+remove_vertex_indices	../trimesh.py	/^    def remove_vertex_indices( self, vertex_indices_to_remove ):$/;"	kind:member	line:604
+roll	../camera.py	/^    roll = 3$/;"	kind:variable	line:19
+rotate	../camera.py	/^    def rotate(self, angle=math.pi \/ 180.0, axis=2):$/;"	kind:member	line:71
+rules	../shapegen.py	/^    rules = { "max_depth" : 20,$/;"	kind:variable	line:155
+rules_surface.py	../rules_surface.py	1;"	kind:file	line:1
+s0	../rules_surface.py	/^        s0 = s*2$/;"	kind:variable	line:74
+s0	../shapegen.py	/^        s0 = s*2$/;"	kind:variable	line:31
+s1	../rules_surface.py	/^        s1 = (s0+1) % (2*slices)$/;"	kind:variable	line:75
+s1	../shapegen.py	/^        s1 = (s0+1) % (2*slices)$/;"	kind:variable	line:32
+s2	../rules_surface.py	/^        s2 = (s0+2) % (2*slices)$/;"	kind:variable	line:76
+s2	../shapegen.py	/^        s2 = (s0+2) % (2*slices)$/;"	kind:variable	line:33
+s3	../rules_surface.py	/^        s3 = (s0+3) % (2*slices)$/;"	kind:variable	line:77
+s3	../shapegen.py	/^        s3 = (s0+3) % (2*slices)$/;"	kind:variable	line:34
+sceneName	../track_gen.py	/^    sceneName = "Track"$/;"	kind:variable	line:18
+setup	../main.py	/^def setup():$/;"	kind:function	line:138
+setup	../nodegui.py	/^def setup():$/;"	kind:function	line:135
+setup_gui	../main.py	/^def setup_gui():$/;"	kind:function	line:121
+setup_gui	../nodegui.py	/^def setup_gui():$/;"	kind:function	line:118
+shaderName	../shadersystem.py	/^        def shaderName(s):$/;"	kind:function	line:21
+shaders	../shadersystem.py	/^    shaders = {}$/;"	kind:variable	line:10
+shaders.py	../shaders.py	1;"	kind:file	line:1
+shadersystem.py	../shadersystem.py	1;"	kind:file	line:1
+shapegen.py	../shapegen.py	1;"	kind:file	line:1
+shapes	../rules_surface.py	/^    (0, 0, 0),$/;"	kind:variable	line:50
+shapes	../shapegen.py	/^    (0, 0, 0),$/;"	kind:variable	line:7
+simplui	../nodes.py	/^import simplui$/;"	kind:namespace	line:2
+slices	../rules_surface.py	/^    slices = 16$/;"	kind:variable	line:67
+slices	../shapegen.py	/^    slices = 16$/;"	kind:variable	line:24
+smoothstep	../track.py	/^def smoothstep(x,a,b):$/;"	kind:function	line:13
+sphere	../geomgen.py	/^def sphere(u, v):$/;"	kind:function	line:91
+sphere	../main.py	/^import sphere$/;"	kind:namespace	line:10
+sphere	../nodegui.py	/^import sphere$/;"	kind:namespace	line:10
+sphere.py	../sphere.py	1;"	kind:file	line:1
+spline	../geomgen.py	/^def spline( t, p ):$/;"	kind:function	line:108
+spline	../track.py	/^def spline(t, v0, v1, v2, v3, tension = 0.5):$/;"	kind:function	line:21
+spline_path	../geomgen.py	/^def spline_path(t, points):$/;"	kind:function	line:121
+surface	../geomgen.py	/^def surface(slices, stacks, func):$/;"	kind:function	line:28
+surface	../rules_surface.py	/^def surface(rules_string):$/;"	kind:function	line:197
+surface	../shapegen.py	/^def surface(rules, slices = 32, stacks = 32):$/;"	kind:function	line:147
+sys	../fbx20151\FbxCommon.py	/^import sys$/;"	kind:namespace	line:2
+sys	../fbxutils.py	/^import sys$/;"	kind:namespace	line:2
+sys	../main.py	/^import sys$/;"	kind:namespace	line:7
+sys	../track_gen.py	/^import sys$/;"	kind:namespace	line:2
+sys	../tri_test.py	/^import sys$/;"	kind:namespace	line:2
+sys	../trimesh.py	/^            import sys$/;"	kind:namespace	line:901
+test.py	../test.py	1;"	kind:file	line:1
+tex_matrix	../main.py	/^tex_matrix = Matrix4()$/;"	kind:variable	line:21
+tex_matrix	../nodegui.py	/^tex_matrix = Matrix4()$/;"	kind:variable	line:19
+texture	../life.py	/^texture = pyglet.image.Texture.create(window.width, window.height, pyglet.gl.GL_RGBA)$/;"	kind:variable	line:74
+theta	../rules_surface.py	/^        theta = 2.0 * pi * slice \/ slices$/;"	kind:variable	line:70
+theta	../shapegen.py	/^        theta = 2.0 * pi * slice \/ slices$/;"	kind:variable	line:27
+through	../camera.py	/^    through = 1.2$/;"	kind:variable	line:13
+topology_changed	../trimesh.py	/^    def topology_changed( self ):$/;"	kind:member	line:551
+track	../fbxutils.py	/^import track$/;"	kind:namespace	line:7
+track	../geomgen.py	/^def track(u, v, func, radius):$/;"	kind:function	line:71
+track	../track_gen.py	/^import track$/;"	kind:namespace	line:9
+track	../tri_test.py	/^import track$/;"	kind:namespace	line:7
+track.py	../track.py	1;"	kind:file	line:1
+track_data	../track_gen.py	/^    track_data = track.make_track()$/;"	kind:variable	line:34
+track_gen.py	../track_gen.py	1;"	kind:file	line:1
+tri_test.py	../tri_test.py	1;"	kind:file	line:1
+triangle	../glfw.py	/^    def triangle(self, center, length=0.1):$/;"	kind:member	line:22
+triangle_orthocentre_2d	../geom.py	/^def triangle_orthocentre_2d(point1, point2, point3):$/;"	kind:function	line:241
+trimesh.py	../trimesh.py	1;"	kind:file	line:1
+tube	../geomgen.py	/^def tube(u, v, func, radius):$/;"	kind:function	line:54
+unbind	../shaders.py	/^    def unbind(self):$/;"	kind:member	line:147
+uniform_matrixf	../shaders.py	/^    def uniform_matrixf(self, name, mat):$/;"	kind:member	line:180
+uniformf	../shaders.py	/^    def uniformf(self, name, *vals):$/;"	kind:member	line:154
+uniformi	../shaders.py	/^    def uniformi(self, name, *vals):$/;"	kind:member	line:167
+up	../camera.py	/^    def up(self):$/;"	kind:member	line:44
+up	../camera.py	/^    up = 2$/;"	kind:variable	line:15
+update	../editmesh.py	/^    def update(self):$/;"	kind:member	line:57
+update	../main.py	/^def update(dt):$/;"	kind:function	line:50
+update	../nodegui.py	/^def update(dt):$/;"	kind:function	line:48
+update	../nodes.py	/^    def update(self):$/;"	kind:member	line:28
+update_edge_list	../trimesh.py	/^    def update_edge_list( self ):$/;"	kind:member	line:252
+update_face_normals_and_areas	../trimesh.py	/^    def update_face_normals_and_areas( self ):$/;"	kind:member	line:90
+update_gui	../main.py	/^def update_gui(dt):$/;"	kind:function	line:54
+update_gui	../nodegui.py	/^def update_gui(dt):$/;"	kind:function	line:52
+update_halfedges	../trimesh.py	/^    def update_halfedges( self ):$/;"	kind:member	line:280
+update_vertex_areas	../trimesh.py	/^    def update_vertex_areas( self ):$/;"	kind:member	line:194
+update_vertex_normals	../trimesh.py	/^    def update_vertex_normals( self ):$/;"	kind:member	line:144
+util	../main.py	/^import util$/;"	kind:namespace	line:11
+util	../nodegui.py	/^import util$/;"	kind:namespace	line:11
+util.py	../util.py	1;"	kind:file	line:1
+uv_walk	../mesh.py	/^def uv_walk(mesh):$/;"	kind:function	line:231
+vec2	../geom.py	/^class vec2(object):$/;"	kind:class	line:5
+vec3	../geom.py	/^class vec3(object):$/;"	kind:class	line:61
+vertShaders	../shadersystem.py	/^    vertShaders = None$/;"	kind:variable	line:7
+vertex_areas	../trimesh.py	/^    vertex_areas = property( get_vertex_areas )$/;"	kind:variable	line:249
+vertex_face_neighbors	../trimesh.py	/^    def vertex_face_neighbors( self, vertex_index ):$/;"	kind:member	line:473
+vertex_is_boundary	../trimesh.py	/^    def vertex_is_boundary( self, vertex_index ):$/;"	kind:member	line:494
+vertex_normals	../trimesh.py	/^    vertex_normals = property( get_vertex_normals )$/;"	kind:variable	line:191
+vertex_valence	../trimesh.py	/^    def vertex_valence( self, vertex_index ):$/;"	kind:member	line:464
+vertex_vertex_neighbors	../trimesh.py	/^    def vertex_vertex_neighbors( self, vertex_index ):$/;"	kind:member	line:443
+vertex_walk	../mesh.py	/^def vertex_walk(mesh):$/;"	kind:function	line:218
+verts	../mesh.py	/^    def verts(self):$/;"	kind:member	line:55
+verts	../mesh.py	/^    def verts(self):$/;"	kind:member	line:71
+verts	../rules_surface.py	/^    verts = []$/;"	kind:variable	line:80
+verts	../rules_surface.py	/^    verts = []$/;"	kind:variable	line:85
+verts	../rules_surface.py	/^    verts = []$/;"	kind:variable	line:90
+verts	../shapegen.py	/^    verts = []$/;"	kind:variable	line:37
+verts	../shapegen.py	/^    verts = []$/;"	kind:variable	line:42
+verts	../shapegen.py	/^    verts = []$/;"	kind:variable	line:47
+view_matrix	../main.py	/^view_matrix = Matrix4()$/;"	kind:variable	line:20
+view_matrix	../nodegui.py	/^view_matrix = Matrix4()$/;"	kind:variable	line:18
+vsync	../main.py	/^                              vsync=False,$/;"	kind:variable	line:29
+vsync	../nodegui.py	/^                              vsync=False,$/;"	kind:variable	line:27
+window	../life.py	/^window = pyglet.window.Window(640, 480, resizable=True, visible=False, caption="Life")$/;"	kind:variable	line:14
+window	../main.py	/^window = pyglet.window.Window(window_width, window_height,$/;"	kind:variable	line:28
+window	../nodegui.py	/^window = pyglet.window.Window(window_width, window_height,$/;"	kind:variable	line:26
+window	../test.py	/^window = pyglet.window.Window(visible=False)$/;"	kind:variable	line:6
+window_height	../main.py	/^window_height = 600$/;"	kind:variable	line:25
+window_height	../nodegui.py	/^window_height = 600$/;"	kind:variable	line:23
+window_width	../main.py	/^window_width = 800$/;"	kind:variable	line:24
+window_width	../nodegui.py	/^window_width = 800$/;"	kind:variable	line:22
+writeScene	../fbxutils.py	/^def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):$/;"	kind:function	line:149
+write_OBJ	../trimesh.py	/^    def write_OBJ( self, fname, header_comment = None ):$/;"	kind:member	line:875
+write_OFF	../trimesh.py	/^    def write_OFF( self, fname ):$/;"	kind:member	line:937
+xy_to_polar	../geom.py	/^def xy_to_polar( xy ):$/;"	kind:function	line:128
+xy_to_polar	../geom.py	/^def xy_to_polar(xy):$/;"	kind:function	line:295
+yaw	../camera.py	/^    yaw = 2$/;"	kind:variable	line:18
+zerosf	../trimesh.py	/^def zerosf( *args, **kwargs ):$/;"	kind:function	line:10

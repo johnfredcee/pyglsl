@@ -1,0 +1,304 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Fri Dec 02 17:59:06 2011
+;; Desktop file format version 206
+;; Emacs version 23.3.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name "w:/meta_headers_aqua/TAGS")
+(setq tags-table-list '("w:/aqua_tools_source/Viewer/TAGS" "w:/tools_libraries/wxMSW-2.9.1/include/TAGS" "w:/meta_headers_aqua/TAGS"))
+(setq search-ring '("copyDa" "MetaData" "filename_" "enumerat" "bi" "pixelFormat" "pixelForm" "extractNu" "\"tg" "maskTypeEnum" "numeric" "extractN" "extractNum" "pixelf" "pixelFormat" "enumerat"))
+(setq regexp-search-ring nil)
+(setq register-alist '((48 . "// note carefully the %% in the format argument - this becomes a single % and is used again in a Format() call later!\n//	wxString row(wxString::Format(wxT(\"Name=%s;Group=0;Width=%04d;Height=%04d;Filter=4;Format=%%d;Path=%s;MipMaps=1;Alpha=%d\"), name, width, height, path, attributes, alphaBits));\n// this one is for the prototyper	\n	wxString row(wxString::Format(wxT(\"Name=%s;Group=0;Width=%04d;Height=%04d;Filter=%%s;Format=%%;Path=%s;MipMaps=0;Alpha=%d\"), name, width, height, path, alphaBits));\n	entry.row       = row;\n")))
+(setq file-name-history '("w:/aqua_tools_source/Viewer/" "w:/aqua_tools_source/Viewer/TAGS" "w:/aqua_tools_source/Viewer/TextureDefinitionManager.cpp" "w:/aqua_tools_source/TextureConverter/TextureMetaData.cpp" "w:/prototyper_binaries/projects/testing/Data/exports/testscene/textures/" "w:/aqua_tools_source/TextureConverter/" "w:/aqua_tools_source/TextureConverter/texconv.h" "w:/aqua_tools_source/TextureConverter/TextureMetaData.cpp" "w:/aqua_tools_source/TextureConverter/" "w:/tools_libraries/wxMSW-2.9.1/include/TAGS"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/ViewerFrame.cpp"
+  "ViewerFrame.cpp"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  20583
+  '(20584 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/SceneManager.h"
+  "SceneManager.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  6745
+  '(nil nil)
+  t
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/SceneManager.cpp"
+  "SceneManager.cpp"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  907
+  '(nil nil)
+  t
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/ViewerFrame.h"
+  "ViewerFrame.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  51
+  '(nil nil)
+  t
+  nil
+  '((buffer-file-coding-system . undecided-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/TextureDefinitionManager.h"
+  "TextureDefinitionManager.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  288
+  '(182 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/Viewer/TextureDefinitionManager.cpp"
+  "TextureDefinitionManager.cpp"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  2661
+  '(2640 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/meta_headers_aqua/aqua/BitmapData.h"
+  "BitmapData.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  112
+  '(nil nil)
+  t
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/TextureConverter/texconv.cpp"
+  "texconv.cpp"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode hi-lock-mode)
+  21376
+  '(17367 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos) (overwrite-mode) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/TextureConverter/TextureMetaData.cpp"
+  "TextureMetaData.cpp"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  1230
+  '(409 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/TextureConverter/TextureMetaData.h"
+  "TextureMetaData.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  221
+  '(76 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "w:/aqua_tools_source/TextureConverter/texconv.h"
+  "texconv.h"
+  'c++-mode
+  '(abbrev-mode mirror-mode compilation-minor-mode auto-complete-mode auto-revert-mode global-auto-revert-mode hs-minor-mode)
+  2076
+  '(582 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  nil
+  "exports"
+  'dired-mode
+  '(global-auto-revert-mode)
+  209
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/testing/Data/exports/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "testscene"
+  'dired-mode
+  '(global-auto-revert-mode)
+  219
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/testing/Data/exports/testscene/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "textures"
+  'dired-mode
+  '(global-auto-revert-mode)
+  234
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/testing/Data/exports/testscene/textures/")
+  nil)
+
+(desktop-create-buffer 206
+  "w:/prototyper_binaries/projects/testing/Data/exports/testscene/textures/ParisProps.txt"
+  "ParisProps.txt"
+  'text-mode
+  '(global-auto-revert-mode)
+  258
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-dos)))
+
+(desktop-create-buffer 206
+  nil
+  "Data"
+  'dired-mode
+  '(global-auto-revert-mode)
+  383
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/testing/Data/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "testing"
+  'dired-mode
+  '(global-auto-revert-mode)
+  306
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/testing/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "projects"
+  'dired-mode
+  '(global-auto-revert-mode)
+  418
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/projects/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "prototyper_binaries"
+  'dired-mode
+  '(global-auto-revert-mode)
+  1364
+  '(nil nil)
+  t
+  '("w:/prototyper_binaries/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "w:/"
+  'dired-mode
+  '(global-auto-revert-mode)
+  2278
+  '(nil nil)
+  t
+  '("w:/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "aqua_tools_source"
+  'dired-mode
+  '(global-auto-revert-mode)
+  196
+  '(nil nil)
+  t
+  '("w:/aqua_tools_source/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "TextureConverter"
+  'dired-mode
+  '(global-auto-revert-mode)
+  204
+  '(nil nil)
+  t
+  '("w:/aqua_tools_source/TextureConverter/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "include"
+  'dired-mode
+  '(global-auto-revert-mode)
+  332
+  '(nil nil)
+  t
+  '("w:/tools_libraries/wxMSW-2.9.1/include/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "wxMSW-2.9.1"
+  'dired-mode
+  '(global-auto-revert-mode)
+  1464
+  '(nil nil)
+  t
+  '("w:/tools_libraries/wxMSW-2.9.1/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "tools_libraries"
+  'dired-mode
+  '(global-auto-revert-mode)
+  849
+  '(nil nil)
+  t
+  '("w:/tools_libraries/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "meta_headers_aqua"
+  'dired-mode
+  '(global-auto-revert-mode)
+  189
+  '(nil nil)
+  t
+  '("w:/meta_headers_aqua/")
+  nil)
+

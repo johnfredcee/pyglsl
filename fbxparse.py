@@ -1,12 +1,14 @@
 import sys
 import os
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]    
+sys.path = sys.path + [os.curdir + os.sep + "pyeuclid"]
+
 import math
 import euclid
 import mesh
 import geomgen
 import fbx
 import mesh
-import flatbuffers
 
 def create_sdk_manager():
     result = fbx.FbxManager.Create()
@@ -78,25 +80,25 @@ def get_node_animated_transform(node, time = 0.0):
 
 def walk_nodes_aux(node):
     for i in range(node.GetChildCount()):
-        print node.GetChild(i).GetName()
+        print(node.GetChild(i).GetName())
         local_tf = get_node_local_transform(node.GetChild(i))
         for vec4 in local_tf:
-            print vec4[0], vec4[1], vec4[2], vec4[3]
+            print(vec4[0], vec4[1], vec4[2], vec4[3])
         walk_nodes_aux(node.GetChild(i))
         
 def walk_nodes(scene):
     root = scene.GetRootNode()
-    print root.GetName()
+    print(root.GetName())
     local_tf = get_node_local_transform(root)
     for vec4 in local_tf:
-        print vec4[0], vec4[1], vec4[2], vec4[3]
+        print(vec4[0], vec4[1], vec4[2], vec4[3])
     walk_nodes_aux(root)
 
 if __name__ == "__main__":
-    print "Hello world"
+    print("Parsing fbx")
     sdk_manager = create_sdk_manager()
     scene = create_scene(sdk_manager, "Generic")
-    print load_scene(sdk_manager, scene, "GenericMan.fbx" )
+    print(load_scene(sdk_manager, scene, "GenericMan.fbx" ))
     axis_system = fbx.FbxAxisSystem(fbx.FbxAxisSystem.eOpenGL)    
     axis_system.ConvertScene(scene)
     root_node = scene.GetRootNode()
