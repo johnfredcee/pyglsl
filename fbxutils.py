@@ -16,35 +16,35 @@ def makeMaterial(pManager, pScene, materialName, **kwargs ):
     lShadingName  = "Phong"
     lBlack = fbx.FbxDouble3(0.0, 0.0, 0.0)
     lRed = fbx.FbxDouble3(1.0, 0.0, 0.0)
-    if kwargs.has_key("diffuse"):
+    if "diffuse" in kwargs:
         diffuse = kwargs["diffuse"]
         diffuse = fbx.FbxDouble3(diffuse[0], diffuse[1], diffuse[2])
     else:
         diffuse = lRed
-    if kwargs.has_key("ambient"):
+    if "ambient" in kwargs:
         ambient = kwargs["ambient"]
         ambient = fbx.FbxDouble3(ambient[0], ambient[1], ambient[2])
     else:
         ambient = lRed
-    if kwargs.has_key("specular"):
+    if "specular" in kwargs:
         specular = kwargs["specular"]
         specular = fbx.FbxDouble3(specular[0], specular[1], specular[2])
     else:
         specular = lBlack
-    if kwargs.has_key("emissive"):
+    if "emissive" in kwargs:
         emissive = kwargs["emissive"]
         emissive = fbx.FbxDouble3(emissive[0], emissive[1], emissive[2])
     else:
         emissive = lBlack
-    if kwargs.has_key("transparency"):
+    if "transparency" in kwargs:
         transpaency = kwargs["transparency"]
     else:
         transparency = 0.5
-    if kwargs.has_key("shininess"):
+    if "shininess" in kwargs:
         shininess = kwargs["shininess"]
     else:
         shininess = 0.5
-    if kwargs.has_key("specularity"):
+    if "specularity" in kwargs:
         specularity = kwargs["specularity"]
     else:
         specularity = 0.3
@@ -147,7 +147,7 @@ def addMaterial( pManager, pScene, pNode, nodeName, **kwargs):
     return fbxMaterial
 
 def writeScene(pManager, pScene, pFilename, pFileFormat = -1, pEmbedMedia = False):
-    print "Writing " + pFilename
+    print("Writing " + pFilename)
     lExporter = fbx.FbxExporter.Create(pManager, "")
     #print "Readers"
     numFormats = pManager.GetIOPluginRegistry().GetReaderFormatCount()

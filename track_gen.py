@@ -1,7 +1,11 @@
-
+#
+# Racetrack generation to fbx file. (C) John Connors 2016,2020
+#
 import sys
 import os
-sys.path = sys.path + [os.curdir + os.sep + "fbx20151"]
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]    
+sys.path = sys.path + [os.curdir + os.sep + "pyeuclid"]
+
 import math
 import euclid
 import mesh
@@ -24,6 +28,7 @@ if __name__ == "__main__":
     # Create the entity that will hold the scene.
     fbxScene = fbx.FbxScene.Create(fbxManager, sceneName)
 
+	# other things to generate..
     # octdata = geomgen.octohedron()
     # octemesh = mesh.EditableMesh("Octohedron", octdata)
     # octfbxmesh = makeMesh(fbxScene, octemesh)
@@ -31,6 +36,7 @@ if __name__ == "__main__":
     # octnode.SetNodeAttribute(octfbxmesh)
     # make_mesh(geomgen.octohedron, "Octohedron")
     # make_mesh(geomgen.make_klein, "Klien", diffuse = (1.0, 0.0, 0.0))
+
     track_data = track.make_track()
     fbxutils.make_mesh(fbxManager, fbxScene, lambda: track_data, "Track", diffuse = (0.4, 0.4, 0.4), texture = "grid.png")
     fbxutils.writeScene(fbxManager, fbxScene, sceneName + ".fbx")
