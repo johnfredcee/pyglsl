@@ -20,8 +20,12 @@ pyeuclid and simplui are no longder dependencies but have their own versions in 
 Useful scripts:
 
 *track_gen.py* - generates a race track in an fbx file.
+
 *fbx_dump.py* - generates a detailed info dump of the contents of an fbx file
+
 *fbx_parse.py* - parses the node hierarchy of an fbx file
+
 *main.py* - pyglet renderer
+
 *ExploreFbx.ipynp* Notebook documenenting working with the fbx sdk api
 
