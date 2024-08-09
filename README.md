@@ -13,9 +13,11 @@ This uses a compatibility profile, because some old calls were hard-coded into P
 
 It's possible it can now use a core profile, we shall see.
 
-pyeuclid and simplui are no longder dependencies but have their own versions in the repo.
+The dependencies pyeuclid and simplui are now submodules pointing to my forks of these packages.
 
 Useful scripts:
+
+*pyglet_version.py* - prints out the version of pyglet that is being used
 
 *track_gen.py* - generates a race track in an fbx file.
 
