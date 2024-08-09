@@ -1,0 +1,6 @@
+[submodule "pyeuclid"]
+	path = pyeuclid
+	url = https://github.com/johnfredcee/pyeuclid.git
+[submodule "simplui"]
+	path = simplui
+	url = https://github.com/johnfredcee/simplui.git
