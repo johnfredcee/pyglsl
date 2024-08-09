@@ -14,8 +14,8 @@ import camera
 import sphere
 import util
 import pyglet
-from euclid import *
-from simplui import *
+from pyeuclid.euclid import *
+from simplui.simplui import *
 
 from shadersystem import ShaderSystem
 
