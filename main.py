@@ -6,24 +6,27 @@
 
 import sys
 import os
-sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]   
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_3"]   
 sys.path = sys.path + [os.curdir + os.sep + "pyeuclid"]
-sys.path = sys.path + [os.curdir + os.sep + "simplui"]
 
+import math
 import camera
-import sphere
-import util
-import pyglet
-from pyeuclid.euclid import *
-from simplui.simplui import *
+import pyglet.gl
+import pyglet.window.key
+import pyglet.app
+
+from pyglet.math import Mat4
+from pyglet.window import Window, FPSDisplay
+from pyglet.event import EVENT_HANDLED, EVENT_UNHANDLED
+# from pyglet.clock import get_fps
+
+from sphere import Sphere
 
 from shadersystem import ShaderSystem
 
-
-
-proj_matrix = Matrix4()
-view_matrix = Matrix4()
-tex_matrix = Matrix4()
+proj_matrix = Mat4()
+view_matrix = Mat4()
+tex_matrix = Mat4()
 frame = None
 dialogue = None
 window_width = 800
@@ -31,9 +34,9 @@ window_height = 600
 
 # create the window, but keep it offscreen until we are done with setup
 window = pyglet.window.Window(window_width, window_height,
-                              vsync=False,
-                              caption="GLSL Test")
-
+                                 vsync=False,
+                                  caption="GLSL Test")
+fpsdisplay = pyglet.window.FPSDisplay(window)
 
 @window.event
 def on_close():
@@ -47,9 +50,8 @@ def on_resize(width, height):
     window_width = width
     window_height = height
     aspect_ratio = float(width) / float(height)
-    proj_matrix = Matrix4.new_perspective(math.pi / 3,
-                                          aspect_ratio, 0.1, 100.0)
-    return pyglet.event.EVENT_HANDLED
+    proj_matrix = Mat4.perspective_projection(aspect_ratio,  0.1, 100.0, math.pi / 3.0)
+    return EVENT_HANDLED
 
 
 def update(dt):
@@ -60,7 +62,7 @@ def update(dt):
 def update_gui(dt):
     if dialogue.parent is not None:
         global cam
-        fps = pyglet.clock.get_fps()
+        fps = 30.0 # to do
         pos = cam.position
         element = frame.get_element_by_name('fps_label')
         # and change the text, to display the current fps
@@ -71,33 +73,25 @@ def update_gui(dt):
 
 @window.event
 def on_draw():
-    global cam, proj_matrix, tex_matrix, grid_texture, frame
-
+    global cam, proj_matrix, tex_matrix, grid_texture, frame, fpsdisplay, poslabel
     window.clear()
-    pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
-    pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
-    mainShader = shaderSystem["main"]
-    gradientShader = shaderSystem["gradient"]
-    mainShader.bind()
-    mainShader.uniform_matrixf(b"projMatrix", proj_matrix)
-    cam.apply(mainShader)
-    mainShader.uniform_matrixf(b"texMatrix",  tex_matrix)
-    pyglet.gl.glActiveTexture(pyglet.gl.GL_TEXTURE0)
-    pyglet.gl.glBindTexture(grid_texture.target, grid_texture.id)
-    mainShader.uniformi(b'tex0', 0)
-    planet.draw(mainShader)
-    pyglet.gl.glBindTexture(grid_texture.target, 0)
-    mainShader.unbind()
-    # back to "old opengl" for the gui
-    pyglet.gl.glViewport(0, 0, window_width, window_height)
-    pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
-    pyglet.gl.glLoadIdentity()
-    pyglet.gl.glOrtho(0, window_width, 0, window_height, -1.0, 1.0)
-    pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
-    pyglet.gl.glDisable(pyglet.gl.GL_DEPTH_TEST)
-    pyglet.gl.glDisable(pyglet.gl.GL_CULL_FACE)
-    frame.draw()
-
+    # pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
+    # pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
+    # mainShader = shaderSystem["main"]
+    # gradientShader = shaderSystem["gradient"]
+    # mainShader.bind()
+    # mainShader["projMatrix"] = proj_matrix
+    # cam.apply(mainShader)
+    # mainShader["texMatrix"] = tex_matrix
+    # pyglet.gl.glActiveTexture(pyglet.gl.GL_TEXTURE0)
+    # pyglet.gl.glBindTexture(grid_texture.target, grid_texture.id)
+    # mainShader['tex0'] = 0
+    # planet.draw(mainShader)
+    # pyglet.gl.glBindTexture(grid_texture.target, 0)
+    # mainShader.unbind()
+    fpsdisplay.draw()
+    poslabel.draw()
+  
 
 @window.event
 def on_key_press(symbol, modifiers):
@@ -149,33 +143,21 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
 #     return pyglet.event.EVENT_HANDLED
 
 def setup_gui():
-    global frame, dialogue
-    # load some gui themesn
-    theme = Theme('themes/macos')
-    # create a frame to contain our gui, the full size of our window
-    frame = Frame(theme, w=800, h=600)
-    window.push_handlers(frame)
-    # create dialogue - note that we create the entire gui in a single call
-    dialogue = Dialogue('Inspector', x=20, y=600-20,
-                        # add a vertical layout to hold the window contents
-                        content=VLayout(autosizex=True, children=[
-                            # add a text label, note that this element is named...
-                            Label('0.0 fps', name='fps_label'),
-                            Label('000.00 000.00 000.00 pos', name='pos_label')]))
-    frame.add(dialogue)
-
+    global fpslabel, poslabel
+    fpslabel = pyglet.text.Label('0.0 fps', font_name='Lucida Sans', x = 20, y = 100)
+    poslabel = pyglet.text.Label('000.00 000.00 000.00 pos', font_name='Lucida Sans', x = 20, y = 120) 
+  
 
 def setup():
     global shaderSystem, grid_image, grid_texture, planet, cam
     # One-time GL setup
-    pyglet.gl.glClearColor(1, 1, 1, 1)
+    pyglet.gl.glClearColor(0.0, 0.0, 0.8, 1)
     shaderSystem = ShaderSystem()
     mainShader = shaderSystem.createShader("main")
     mainShader.bind()
-    grid_image = pyglet.image.load('images/grid.png')
-    grid_texture = grid_image.get_texture()
-    planet = sphere.Sphere(1.0)
-    cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
+    grid_texture = pyglet.resource.texture('images/grid.png')
+    planet = Sphere(radius = 1.0)
+    cam = camera.Camera(position=pyglet.math.Vec3(0.0, 0.0, -10.0))
     mainShader.unbind()
     gradientShader = shaderSystem.createShader("gradient")
 
@@ -183,7 +165,7 @@ def setup():
 pyglet.clock.schedule_interval(update, 1.0/60.0)
 
 # schedule a gui update every half second
-pyglet.clock.schedule_interval(update_gui, 0.5)
+#pyglet.clock.schedule_interval(update_gui, 0.5)
 
 # make the window visible
 window.set_visible(True)
@@ -192,11 +174,10 @@ window.set_visible(True)
 setup()
 setup_gui()
 
-window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
 
-sys.path = sys.path + [os.curdir + os.sep + "fbx2020_1"]
+sys.path = sys.path + [os.curdir + os.sep + "fbx2020_3"]
 import FbxCommon
 try:
     from fbx import *

@@ -1,4 +1,4 @@
-import euclid
+from pyeuclid.euclid import Vector3
 
 class Color:
     def __init__(self, r, g, b, a = 0.):
@@ -28,7 +28,7 @@ class Vertex:
         self.x = round(x, 4)
         self.y = round(y, 4)
         self.z = round(z, 4)
-        self.v = euclid.Vector3(self.x,self.y,self.z)
+        self.v = Vector3(self.x,self.y,self.z)
 
     def __hash__(self):
         return hash((self.x, self.y, self.z))

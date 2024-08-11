@@ -1,7 +1,6 @@
 import os
 
-from shaders import Shader
-
+from pyglet.graphics.shader import Shader, ShaderProgram
 
 class ShaderSystem:
     vertShaders = None
@@ -32,19 +31,19 @@ class ShaderSystem:
         if name in ShaderSystem.vertShaders:
             vertFile = ShaderSystem.vertShaders[name]
             f = open(vertFile)
-            vertFile = f.readlines()
+            vertFile = f.read()
             f.close()
         fragFile = None
         if name in ShaderSystem.fragShaders:
             fragFile = ShaderSystem.fragShaders[name]
             f = open(fragFile)
-            fragFile = f.readlines()
+            fragFile = f.read()
             f.close()
         geomFile = None
         if name in ShaderSystem.geomShaders:
             geomFile = ShaderSystem.geomShaders[name]
             f = open(geomFile)
-            geomFile = f.readlines()
+            geomFile = f.read()
             f.close()
         if (vertFile != None) or (fragFile != None) or (geomFile != None):
             return (vertFile, fragFile, geomFile)
@@ -52,7 +51,14 @@ class ShaderSystem:
     def createShader(self, name):
         shaderTexts = self.getShaderFileContents(name)
         print("Creating shader " + name)
-        ShaderSystem.shaders[name] = Shader(vert = shaderTexts[0], frag = shaderTexts[1], geom=shaderTexts[2])
+        vert = Shader(shaderTexts[0], 'vertex')
+        frag = Shader(shaderTexts[1], 'fragment')
+        geom = None
+        if (shaderTexts[2]):
+            geom = Shader(shaderTexts[2], 'geom')
+            ShaderSystem.shaders[name] = ShaderProgram(vert, frag, geom)
+        else:
+            ShaderSystem.shaders[name] = ShaderProgram(vert, frag)
         return ShaderSystem.shaders[name]
 
     def __getitem__(self, name):

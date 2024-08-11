@@ -1,10 +1,10 @@
 
 import math
 import mesh
-import pyglet
 from pyglet.gl import *
-from euclid import *
-
+from pyglet.graphics.shader import ShaderProgram
+from pyglet.graphics import draw_indexed
+from pyglet.math import Vec3
 
 class Sphere(object):
 	def __init__(self, radius=1.0, numRings=16, numSegments=16):
@@ -30,7 +30,7 @@ class Sphere(object):
 				x0 = r0 * math.sin(seg * deltaSegAngle)
 				z0 = r0 * math.cos(seg * deltaSegAngle)
 				self.vertices.extend([x0, y0, z0])
-				normal = Vector3(x0, y0, z0)
+				normal = Vec3(x0, y0, z0)
 				normal.normalize()
 				self.normals.extend(normal)
 				self.uvs.extend([seg / float(numSegments),
@@ -52,14 +52,11 @@ class Sphere(object):
 		self.indexes = tuple(self.indexes)
 		return
 
-	def draw(self, shader):
-		positions   = shader.attributes[b"position"]["location"]
-		uvs         = shader.attributes[b"uv"]["location"]
-		vertattribs = "%dg3f/static" %  positions
-		uvattribs   = "%dg2f/static" %  uvs
-		pyglet.graphics.draw_indexed(len(self.vertices) // 3, GL_TRIANGLES,
-									self.indexes,
-									(vertattribs, self.vertices), (uvattribs, self.uvs))
+	def draw(self, shader : ShaderProgram) -> None:
+		vlist = shader.vertex_list_indexed(len(self.vertices) // 3, GL_TRIANGLES,
+						self.indexes, None, None, 
+						position = ("f", self.vertices), uv = ("f", self.uvs))
+		vlist.draw(GL_TRIANGLES)
 		
 				  
 		

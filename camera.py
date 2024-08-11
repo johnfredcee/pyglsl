@@ -1,9 +1,8 @@
 
 import math
-from euclid import Vector3
-from euclid import Matrix4
-from euclid import Matrix3
-from euclid import Quaternion
+from pyglet.math import Vec3
+from pyglet.math import Mat4
+from pyglet.graphics.shader import ShaderProgram
 
 
 X_AXIS = 0
@@ -11,36 +10,36 @@ Y_AXIS = 1
 Z_AXIS = 2
 
 class Camera:
-    axes = [Vector3(1.0, 0.0, 0.0),
-            Vector3(0.0, 1.0, 0.0),
-            Vector3(0.0, 0.0, 1.0)]
-    world_up = Vector3(0.0, 1.0, 0.0)
+    axes = [Vec3(1.0, 0.0, 0.0),
+            Vec3(0.0, 1.0, 0.0),
+            Vec3(0.0, 0.0, 1.0)]
+    world_up = Vec3(0.0, 1.0, 0.0)
     velocity = [ 0.0, 0.0, 0.0 ]
     angular_velocity = [ 0.0, 0.0, 0.0 ]
     def __init__(self, 
-                 position=Vector3(0.0, 0.0, 0.0),
-                 forward=Vector3(0.0, 0.0, 1.0)):
+                 position=Vec3(0.0, 0.0, 0.0),
+                 forward=Vec3(0.0, 0.0, 1.0)):
         self.position = position
-        self.forward = forward.normalized()
-        self.cam_matrix = Matrix4()
-        self.view_matrix = Matrix4()
+        self.forward = forward.normalize()
+        self.cam_matrix = Mat4()
+        self.view_matrix = Mat4()
         self.yaw = 0.0
         self.pitch = 0.0
         self.calc_view()
-     
+
     def calc_view(self):
         self.forward.x = math.cos(math.radians(self.pitch)) * math.cos(math.radians(self.yaw))
         self.forward.y = math.sin(math.radians(self.pitch))
         self.forward.z = math.cos(math.radians(self.pitch)) * math.sin(math.radians(self.yaw))
-        self.forward = self.forward.normalized()
-        self.across = Camera.world_up.cross(self.forward).normalized()
-        self.up = self.forward.cross(self.across).normalized()
-        self.cam_matrix = Matrix4.new_rotate_triple_axis(self.across, self.up, self.forward)
-        self.cam_matrix.d = self.position.x
-        self.cam_matrix.h = self.position.y
-        self.cam_matrix.l = self.position.z
+        self.forward = self.forward.normalize()
+        self.across = Camera.world_up.cross(self.forward).normalize()
+        self.up = self.forward.cross(self.across).normalize()
+        self.cam_matrix = Mat4(values = (self.across[0], self.up[0], self.forward[0], 0.0,  
+                                self.across[1], self.up[1], self.forward[1], 0.0,
+                                self.across[2], self.up[2], self.forward[2], 0.0,
+                                self.position.x, self.position.y, self.position.z, 1.0))                               
         self.target = self.position + self.forward;
-        self.view_matrix = Matrix4.new_look_at(self.position, self.target, Camera.world_up)
+        self.view_matrix = Mat4.look_at(self.position, self.target, Camera.world_up)
      
     def axis(self, axis):
         if (axis == 0):
@@ -64,12 +63,13 @@ class Camera:
         #print forward
         return
 
-    def apply(self, shader):
+    def apply(self, shader : ShaderProgram) -> None:
         self.calc_view()
-        if (shader.has_uniform("cameraMatrix")):
-            shader.uniform_matrixf("cameraMatrix", self.cam_matrix)
-        if (shader.has_uniform("viewMatrix")):
-            shader.uniform_matrixf("viewMatrix", self.view_matrix)
+        uniforms = shader.uniforms
+        if ("cameraMatrix" in uniforms):
+            shader["cameraMatrix"] = self.cam_matrix
+        if ("viewMatrix" in uniforms):
+            shader["viewMatrix"] = self.view_matrix 
         return
 
     def update(self, dt):
@@ -80,7 +80,7 @@ class Camera:
         return
 
 if __name__ == "__main__":
-    cam = Camera(position=Vector3(0.0, 0.0, -10.0))
+    cam = Camera(position=Vec3(0.0, 0.0, -10.0))
     cam.pitch = 90
     print(cam.view_matrix)
     print(cam.cam_matrix)
