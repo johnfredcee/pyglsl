@@ -11,7 +11,9 @@ sys.path = sys.path + [os.curdir + os.sep + "pyeuclid"]
 
 import math
 import camera
+
 import pyglet.gl
+import pyglet.graphics
 import pyglet.window.key
 import pyglet.app
 
@@ -27,14 +29,13 @@ from shadersystem import ShaderSystem
 proj_matrix = Mat4()
 view_matrix = Mat4()
 tex_matrix = Mat4()
-frame = None
-dialogue = None
 window_width = 800
 window_height = 600
+batch = pyglet.graphics.Batch()
 
 # create the window, but keep it offscreen until we are done with setup
 window = pyglet.window.Window(window_width, window_height,
-                                 vsync=False,
+                                 vsync=True, resizable = True,
                                   caption="GLSL Test")
 fpsdisplay = pyglet.window.FPSDisplay(window)
 
@@ -45,12 +46,9 @@ def on_close():
 
 @window.event
 def on_resize(width, height):
-    # Override the default on_resize handler to create a 3D projection
-    global proj_matrix, window_width, window_height
-    window_width = width
-    window_height = height
-    aspect_ratio = float(width) / float(height)
-    proj_matrix = Mat4.perspective_projection(aspect_ratio,  0.1, 100.0, math.pi / 3.0)
+    global proj_matrix
+    window.viewport = (0, 0, width, height)
+    proj_matrix = Mat4.perspective_projection(window.aspect_ratio,  0.1, 255.0, fov = 60.0)
     return EVENT_HANDLED
 
 
@@ -73,22 +71,24 @@ def update_gui(dt):
 
 @window.event
 def on_draw():
-    global cam, proj_matrix, tex_matrix, grid_texture, frame, fpsdisplay, poslabel
+    global cam, window,  batch, fpsdisplay, poslabel
     window.clear()
-    # pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
-    # pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
+    old_proj = window.projection
+    old_view = window.view
+    window.projection = proj_matrix
+    cam.apply(window)
+    batch.draw()
     # mainShader = shaderSystem["main"]
     # gradientShader = shaderSystem["gradient"]
     # mainShader.bind()
-    # mainShader["projMatrix"] = proj_matrix
-    # cam.apply(mainShader)
-    # mainShader["texMatrix"] = tex_matrix
     # pyglet.gl.glActiveTexture(pyglet.gl.GL_TEXTURE0)
     # pyglet.gl.glBindTexture(grid_texture.target, grid_texture.id)
     # mainShader['tex0'] = 0
     # planet.draw(mainShader)
     # pyglet.gl.glBindTexture(grid_texture.target, 0)
     # mainShader.unbind()
+    window.projection = old_proj
+    window.view = old_view
     fpsdisplay.draw()
     poslabel.draw()
   
@@ -149,17 +149,19 @@ def setup_gui():
   
 
 def setup():
-    global shaderSystem, grid_image, grid_texture, planet, cam
+    global shaderSystem, grid_texture, planet, cam, batch
     # One-time GL setup
     pyglet.gl.glClearColor(0.0, 0.0, 0.8, 1)
+    pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
+    #pyglet.gl.glEnable(pyglet.gl.GL_CULL_FACE)
+   
     shaderSystem = ShaderSystem()
     mainShader = shaderSystem.createShader("main")
-    mainShader.bind()
     grid_texture = pyglet.resource.texture('images/grid.png')
-    planet = Sphere(radius = 1.0)
-    cam = camera.Camera(position=pyglet.math.Vec3(0.0, 0.0, -10.0))
-    mainShader.unbind()
-    gradientShader = shaderSystem.createShader("gradient")
+    planet = Sphere(shader = mainShader, texture = grid_texture, radius = 1.0)
+    cam = camera.Camera(position=pyglet.math.Vec3(0.0, 0.0, 10.0))
+    planet.get_batch(batch)
+
 
 # schedule an empty update function, at 60 frames/second
 pyglet.clock.schedule_interval(update, 1.0/60.0)
@@ -176,20 +178,21 @@ setup_gui()
 
 window.push_handlers(on_key_press)
 
+pyglet.app.run()
 
-sys.path = sys.path + [os.curdir + os.sep + "fbx2020_3"]
-import FbxCommon
-try:
-    from fbx import *
-    # Prepare the FBX SDK.
-    (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()
-    try:
-        print("Ipython import")
-        from IPython.lib.inputhook import enable_gui
-        enable_gui('pyglet')
-    except ImportError:
-         print("Ipython import failed")
-    pyglet.app.run()
-    lSdkManager.Destroy()
-except ImportError:
-    print("You need to build the python bindings for fbx 2020.1")
+# sys.path = sys.path + [os.curdir + os.sep + "fbx2020_3"]
+# import FbxCommon
+# try:
+#     from fbx import *
+#     # Prepare the FBX SDK.
+#     (lSdkManager, lScene) = FbxCommon.InitializeSdkObjects()
+#     try:
+#         print("Ipython import")
+#         from IPython.lib.inputhook import enable_gui
+#         enable_gui('pyglet')
+#     except ImportError:
+#          print("Ipython import failed")
+#     pyglet.app.run()
+#     lSdkManager.Destroy()
+# except ImportError:
+#     print("You need to build the python bindings for fbx 2020.1")

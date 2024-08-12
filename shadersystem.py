@@ -48,7 +48,7 @@ class ShaderSystem:
         if (vertFile != None) or (fragFile != None) or (geomFile != None):
             return (vertFile, fragFile, geomFile)
 
-    def createShader(self, name):
+    def createShader(self, name) -> ShaderProgram:
         shaderTexts = self.getShaderFileContents(name)
         print("Creating shader " + name)
         vert = Shader(shaderTexts[0], 'vertex')

@@ -3,6 +3,7 @@ import math
 from pyglet.math import Vec3
 from pyglet.math import Mat4
 from pyglet.graphics.shader import ShaderProgram
+from pyglet.window import Window
 
 
 X_AXIS = 0
@@ -38,7 +39,7 @@ class Camera:
                                 self.across[1], self.up[1], self.forward[1], 0.0,
                                 self.across[2], self.up[2], self.forward[2], 0.0,
                                 self.position.x, self.position.y, self.position.z, 1.0))                               
-        self.target = self.position + self.forward;
+        self.target = Vec3(0.0, 0.0, 0.0)
         self.view_matrix = Mat4.look_at(self.position, self.target, Camera.world_up)
      
     def axis(self, axis):
@@ -63,13 +64,9 @@ class Camera:
         #print forward
         return
 
-    def apply(self, shader : ShaderProgram) -> None:
+    def apply(self, window : Window) -> None:
         self.calc_view()
-        uniforms = shader.uniforms
-        if ("cameraMatrix" in uniforms):
-            shader["cameraMatrix"] = self.cam_matrix
-        if ("viewMatrix" in uniforms):
-            shader["viewMatrix"] = self.view_matrix 
+        window.view = self.view_matrix
         return
 
     def update(self, dt):
@@ -82,8 +79,8 @@ class Camera:
 if __name__ == "__main__":
     cam = Camera(position=Vec3(0.0, 0.0, -10.0))
     cam.pitch = 90
-    print(cam.view_matrix)
-    print(cam.cam_matrix)
     cam.calc_view()
+    testmat = Mat4.from_translation(Vec3(10,9,8))
     print(cam.view_matrix)
-    print(cam.cam_matrix)
+    print(testmat)
+  

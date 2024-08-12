@@ -3,11 +3,12 @@ import math
 import mesh
 from pyglet.gl import *
 from pyglet.graphics.shader import ShaderProgram
-from pyglet.graphics import draw_indexed
+from pyglet.image import Texture
 from pyglet.math import Vec3
+import rendergroup
 
 class Sphere(object):
-	def __init__(self, radius=1.0, numRings=16, numSegments=16):
+	def __init__(self, shader : ShaderProgram, texture : Texture, radius=1.0, numRings=16, numSegments=16):
 		def pointOnSphere(radius, phi, theta):
 			u = radius * math.cos(phi)
 			x = math.sqrt(radius * radius - u * u) * math.cos(theta)
@@ -19,6 +20,9 @@ class Sphere(object):
 		self.normals = []
 		self.uvs = []
 		self.indexes = []
+		self.shader = shader
+		self.texture = texture
+		self.group = rendergroup.RenderGroup(texture, shader)
 		deltaRingAngle = (math.pi / numRings)
 		deltaSegAngle = (2.0 * math.pi / numSegments)
 		offset = 0
@@ -52,11 +56,10 @@ class Sphere(object):
 		self.indexes = tuple(self.indexes)
 		return
 
-	def draw(self, shader : ShaderProgram) -> None:
-		vlist = shader.vertex_list_indexed(len(self.vertices) // 3, GL_TRIANGLES,
-						self.indexes, None, None, 
+	def get_batch(self, batch) -> None:
+		self.shader.vertex_list_indexed(len(self.vertices) // 3, GL_TRIANGLES,
+						self.indexes, batch, self.group, 
 						position = ("f", self.vertices), uv = ("f", self.uvs))
-		vlist.draw(GL_TRIANGLES)
 		
 				  
 		
