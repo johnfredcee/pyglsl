@@ -165,3 +165,4 @@ Scripts/
 pyvenv.cfg
 
 .vscode/
+*.code-workspace
