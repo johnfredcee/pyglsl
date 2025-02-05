@@ -1,24 +1,19 @@
-#
-# Copyright Tristam Macdonald 2008.
-#
-# Distributed under the Boost Software License, Version 1.0
-# (see http://www.boost.org/LICENSE_1_0.txt)
-#
 
-import pyglet
+from pyglet.math import Mat4, Vec3
+import pyglet.window
 import camera
 import sphere
-import util
-from euclid import *
-from simplui import *
+import gui
+from math import pi
 
 from shadersystem import ShaderSystem
 
-proj_matrix = Matrix4()
-view_matrix = Matrix4()
-tex_matrix = Matrix4()
+proj_matrix = Mat4()
+view_matrix = Mat4()
+tex_matrix = Mat4()
 frame = None
-dialogue = None
+pos_label = None
+fps_label = None
 window_width = 800
 window_height = 600
 
@@ -40,8 +35,8 @@ def on_resize(width, height):
     window_width = width
     window_height = height
     aspect_ratio = float(width) / float(height)
-    proj_matrix = Matrix4.new_perspective(math.pi / 3,
-                                          aspect_ratio, 0.1, 100.0)
+    proj_matrix = Mat4.new_perspective(pi / 3.0,
+                                       aspect_ratio, 0.1, 100.0)
     return pyglet.event.EVENT_HANDLED
 
 
@@ -50,15 +45,12 @@ def update(dt):
 
 
 def update_gui(dt):
-    if dialogue.parent is not None:
-        global cam
-        fps = pyglet.clock.get_fps()
-        pos = cam.position
-        element = frame.get_element_by_name('fps_label')
-        # and change the text, to display the current fps
-        element. text = '%.1f fps' % (fps)
-        element = frame.get_element_by_name('pos_label')
-        element.text = '%6.2f,%6.2f,%6.2f pos' % (pos.x, pos.y, pos.z)
+    global cam, fps_label, pos_label
+    fps = pyglet.clock.get_fps()
+    pos = cam.position
+    # and change the text, to display the current fps
+    fps_label.set_text(f'{fps:.1f} fps')
+    pos_label.set_text(f'{pos.x:6.2f}, {pos.y:6.2f}, {pos.z:6.2f} pos')
 
 
 @window.event
@@ -92,12 +84,7 @@ def on_draw():
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global cam, dialogue
-    if symbol == pyglet.window.key.I and modifiers & pyglet.window.key.MOD_ACCEL:
-        if dialogue.parent is not None:
-            frame.remove(dialogue)
-        else:
-            frame.add(dialogue)
+    global cam
     if symbol == pyglet.window.key.W:
         cam.move(0.01, camera.Z_AXIS)
     if symbol == pyglet.window.key.S:
@@ -116,20 +103,14 @@ def on_key_release(symbol, modifiers):
 
 
 def setup_gui():
-    global frame, dialogue
-    # load some gui themesn
-    theme = Theme('themes/macos')
-    # create a frame to contain our gui, the full size of our window
-    frame = Frame(theme, w=800, h=600)
-    window.push_handlers(frame)
-    # create dialogue - note that we create the entire gui in a single call
-    dialogue = Dialogue('Inspector', x=20, y=600-20,
-                        # add a vertical layout to hold the window contents
-                        content=VLayout(autosizex=True, children=[
-                            # add a text label, note that this element is named...
-                            Label('0.0 fps', name='fps_label'),
-                            Label('000.00 000.00 000.00 pos', name='pos_label')]))
-    frame.add(dialogue)
+    global frame, fps_label, pos_label
+    batch = pyglet.graphics.Batch()
+    frame = gui.Frame(batch)
+    fps_label = gui.SimpleLabel('0.0 fps', 20, 580, batch, name='fps_label')
+    pos_label = gui.SimpleLabel(
+        '000.00 000.00 000.00 pos', 20, 560, batch, name='pos_label')
+    frame.add(fps_label)
+    frame.add(pos_label)
 
 
 def setup():
@@ -140,9 +121,10 @@ def setup():
     mainShader = shaderSystem.createShader("main")
     grid_image = pyglet.image.load('images/grid.png')
     grid_texture = grid_image.get_texture()
-    planet = sphere.Sphere(1.0)
-    cam = camera.Camera(position=Vector3(0.0, 0.0, -10.0))
+    planet = sphere.Sphere(shader = mainShader, texture = grid_texture, radius = 1.0)
+    cam = camera.Camera(position=Vec3(0.0, 0.0, -10.0))
     mainShader.unbind()
+
 
 # schedule an empty update function, at 60 frames/second
 pyglet.clock.schedule_interval(lambda dt: None, 1.0/60.0)
@@ -160,10 +142,5 @@ setup_gui()
 window.push_handlers(frame)
 window.push_handlers(on_key_press)
 
-try:
-    print "Ipython import"
-    from IPython.lib.inputhook import enable_gui
-    enable_gui('pyglet')
-except ImportError:
-    print "Ipython import failed"
-    pyglet.app.run()
+from IPython import get_ipython
+get_ipython().run_line_magic('gui', 'pyglet')

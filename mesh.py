@@ -1,4 +1,4 @@
-from pyeuclid.euclid import Vector3
+from pyglet.math import Vec3
 
 class Color:
     def __init__(self, r, g, b, a = 0.):
@@ -20,15 +20,16 @@ class UV:
 
     def __len__(self):
         return 2
+
     def __getitem__(self, key):
-        return (u,v)[key]
+        return (self.u,self.v)[key]
 
 class Vertex:
     def __init__(self, x, y, z):
         self.x = round(x, 4)
         self.y = round(y, 4)
         self.z = round(z, 4)
-        self.v = Vector3(self.x,self.y,self.z)
+        self.v = Vec3(self.x,self.y,self.z)
 
     def __hash__(self):
         return hash((self.x, self.y, self.z))
